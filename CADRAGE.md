@@ -67,62 +67,54 @@ références reconnues en santé au travail :
 
 ---
 
-## 4. Le modèle de criticité
+## 4. Le modèle de criticité (par item)
 
 ### 4.1 Principe général
 
-La criticité **ne se résume pas à un comptage**. Elle combine 3 ingrédients :
+La criticité **ne s'agrège pas** : on ne calcule pas de score et on ne compte pas
+les signaux. Chaque signal porte **sa propre criticité** (son niveau N1→N4) et
+**son propre conseil**, parce que tous les signaux n'ont pas le même poids.
 
 ```
-Criticité = ƒ( signaux pondérés  +  aggravation par le contexte  +  drapeaux rouges )
+Niveau d'ensemble = le niveau du signal le plus sérieux coché
 ```
 
-- **Signaux pondérés** : chaque signal a un poids (1 à 3) selon sa valeur
-  d'alerte en santé au travail.
-- **Aggravation par le contexte** : les facteurs de contexte ne créent pas
-  l'alerte seuls, mais **augmentent** le niveau (un même signal est plus
-  préoccupant si le contexte est défavorable) et surtout **expliquent la cause**
-  pour orienter la bonne réponse.
-- **Drapeaux rouges** : certains signaux de souffrance déclenchent **directement
-  le niveau maximal**, quel que soit le total (principe de précaution).
+- **Pas de pondération, pas de cumul** : 4 signaux faibles ne « font » pas une
+  alerte ; c'est le signal le plus grave qui donne la conduite.
+- **Le contexte de travail** n'augmente pas le niveau : il éclaire les causes et
+  fournit des **leviers d'action** (rattachés aux familles Gollac).
+- **Chaque item reste visible** dans la restitution, avec son badge de criticité.
 
 ### 4.2 Les niveaux de réponse
 
-| Niveau | Intitulé | Lecture | Posture managériale |
-|---|---|---|---|
-| **N1** | **Vigilance** | Signal faible / isolé | Observer, rester disponible, échange informel, ne rien dramatiser. |
-| **N2** | **Attention** | Plusieurs signaux ou un signal modéré + contexte défavorable | Initier un **échange dédié** et bienveillant, ajuster ce qui peut l'être, reprendre un point à court terme. |
-| **N3** | **Situation dégradée** | Accumulation de signaux ou signaux forts | Échange structuré, **plan de suivi renforcé**, **associer / informer les RH**. |
-| **N4** | **Alerte** | Drapeau rouge ou cumul majeur | **Orientation sans délai** : référent RPS, médecine du travail, cellule d'écoute. Soutien, informer les RH. |
+| Niveau | Intitulé | Posture managériale |
+|---|---|---|
+| **N1** | **Vigilance** | Observer, rester disponible, échange informel, ne rien dramatiser. |
+| **N2** | **Attention** | Initier un **échange dédié** et bienveillant, écouter avant de résoudre, prévoir un suivi. |
+| **N3** | **Situation sérieuse** | Échange structuré, **plan de suivi**, **associer / informer les RH**, agir sur le travail. |
+| **N4** | **Alerte** | **Orientation sans délai** (référent RPS, médecine du travail, cellule d'écoute) ; protéger, ne pas rester seul. |
 
-> Le passage d'un niveau à l'autre se fait par **seuils sur un score**, **plus**
-> la règle des drapeaux rouges. Les seuils ci-dessous sont une **proposition de
-> départ** à calibrer ensemble.
+### 4.3 Le niveau intrinsèque de chaque signal
 
-### 4.3 Calcul du score (proposition à calibrer)
+Le niveau est porté **signal par signal**, dans `data/contenu.json` (champ
+`niveau`). Répartition actuelle (validée comme base, ajustable au fil de l'eau) :
 
-```
-score_signaux  = Σ (poids des signaux cochés)
-multiplicateur = 1 + 0,1 × (nombre de facteurs de contexte cochés)   [plafonné à 1,5]
-score          = score_signaux × multiplicateur
+- **N4 — Alerte** : propos inquiétants / désespoir.
+- **N3 — Situation sérieuse** : mal-être exprimé ouvertement, changement de comportement.
+- **N2 — Attention** : isolement, irritabilité, pleurs/émotivité, plaintes somatiques/fatigue, esprit négatif, conflits interpersonnels, comportements négatifs, désengagement, surinvestissement.
+- **N1 — Vigilance** : absentéisme, baisse de performances, non-respect des délais, erreurs, inattention, manque d'autonomie, baisse de motivation, feedback négatif.
 
-Si un drapeau rouge est coché          → N4 (quel que soit le score)
-Sinon, selon le score :
-   score 1–2     → N1   (Vigilance)
-   score 3–5     → N2   (Attention)
-   score 6–9     → N3   (Situation dégradée)
-   score ≥ 10    → N4   (Alerte)
-```
-
-Ces nombres sont des **paramètres**, pas du dur : ils vivront dans le fichier de
-configuration et seront ajustés après tes retours.
+> Principe directeur : **le rouge se mérite** (danger explicite) et **le manager
+> reste en première ligne** — les relais viennent en appui, pas en substitution.
 
 ---
 
-## 5. Taxonomie des **signaux d'alerte** (pondérés)
+## 5. Taxonomie des **signaux d'alerte**
 
-Poids : **1** = signal faible / fréquent / peu spécifique · **2** = signal
-significatif · **3** = signal fort. 🚩 = drapeau rouge (déclenche N4).
+> Note : le modèle ne pondère plus les signaux (voir §4). Le niveau de chaque
+> signal est désormais fixé en §4.3. Les notes ci-dessous documentent la
+> **lecture santé-travail** de chaque signal ; la colonne « Poids » est
+> conservée à titre d'historique.
 
 ### Souffrance & santé psychique
 | Signal | Poids | Note |

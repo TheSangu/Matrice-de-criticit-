@@ -23,7 +23,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [x] **Nouveau modèle** : matrice gravité × installation (ponctuel/répété/installé) + convergence
 - [x] Drapeaux rouges (propos inquiétants, mal-être exprimé) → N4
 - [ ] Valider la **matrice** et les règles de **convergence** après tests terrain
-- [ ] Mettre à jour `CADRAGE.md` pour refléter le modèle v2
+- [x] `CADRAGE.md` réaligné sur le modèle par item (v3)
 
 ## C — Ressources internes Groupama d'Oc
 *Brancher les dispositifs réels — `data/contenu.json`*
