@@ -8,12 +8,25 @@
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="brand-bar">
+    <div class="wrap">
+      <a class="brand" href="." aria-label="Groupama d'Oc">
+        <img src="assets/logo.png" alt="Groupama d'Oc" class="brand-logo"
+             onerror="this.remove(); document.getElementById('brand-fallback').hidden = false;" />
+        <span id="brand-fallback" class="brand-wordmark" hidden>
+          <span class="bw-mark" aria-hidden="true">G</span>
+          <span class="bw-text">Groupama<span class="bw-doc">d'Oc</span></span>
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <div class="title-band">
     <div class="wrap">
       <h1 id="app-titre">Matrice de criticité</h1>
       <p id="app-sous-titre" class="sous-titre"></p>
     </div>
-  </header>
+  </div>
 
   <main class="wrap" id="main">
 

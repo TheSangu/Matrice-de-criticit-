@@ -1,14 +1,19 @@
 :root {
-  --bg: #f5f6f8;
+  /* Charte Groupama d'Oc */
+  --primary: #00875a;          /* vert Groupama profond */
+  --primary-dark: #006b47;     /* survol */
+  --accent: #2bd96b;           /* vert vif (campagne "Tous Acteurs") */
+  --accent-soft: #e7faf0;      /* vert très clair pour les fonds */
+
+  --bg: #f4f7f5;
   --surface: #ffffff;
-  --text: #1f2933;
-  --muted: #6b7280;
-  --border: #e2e5ea;
-  --primary: #2c5282;
-  --primary-dark: #234876;
-  --focus: #3182ce;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --text: #2c3a42;             /* gris foncé "D'OC" */
+  --muted: #6b7a82;
+  --border: #e1e8e3;
+  --focus: #00875a;
+
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(0, 50, 30, 0.08);
   --maxw: 920px;
 }
 
@@ -28,14 +33,58 @@ body {
   padding: 0 1.1rem;
 }
 
-/* Header / footer */
-.site-header {
+/* Barre de marque (blanche, avec logo) */
+.brand-bar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 0;
+}
+.brand { display: inline-flex; align-items: center; text-decoration: none; }
+.brand-logo { height: 46px; width: auto; display: block; }
+
+/* Repli si le logo officiel n'est pas fourni (assets/logo.png) */
+.brand-wordmark { display: inline-flex; align-items: center; gap: 0.55rem; }
+.brand-wordmark .bw-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 50%;
   background: var(--primary);
   color: #fff;
-  padding: 1.4rem 0;
+  font-weight: 800;
+  font-size: 1.4rem;
+  line-height: 1;
 }
-.site-header h1 { margin: 0; font-size: 1.5rem; }
-.site-header .sous-titre { margin: 0.25rem 0 0; opacity: 0.9; font-size: 0.95rem; }
+.brand-wordmark .bw-text {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brand-wordmark .bw-text > :first-child,
+.brand-wordmark .bw-text {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--primary);
+  letter-spacing: -0.01em;
+}
+.brand-wordmark .bw-doc {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--text);
+  text-transform: uppercase;
+  margin-top: 0.18rem;
+}
+
+/* Bandeau de titre (vert) */
+.title-band {
+  background: var(--primary);
+  color: #fff;
+  padding: 1.3rem 0;
+}
+.title-band h1 { margin: 0; font-size: 1.5rem; letter-spacing: -0.01em; }
+.title-band .sous-titre { margin: 0.25rem 0 0; opacity: 0.92; font-size: 0.95rem; }
 
 .site-footer {
   margin-top: 2.5rem;
@@ -106,7 +155,7 @@ main { padding-top: 1.6rem; }
 }
 .item:hover { border-color: #c5cdd8; }
 .item input { margin-top: 0.2rem; width: 1.05rem; height: 1.05rem; flex: none; accent-color: var(--primary); cursor: pointer; }
-.item.coche { border-color: var(--primary); background: #eef3f9; }
+.item.coche { border-color: var(--primary); background: var(--accent-soft); }
 .item .libelle { font-size: 0.95rem; }
 .item .famille { display: block; color: var(--muted); font-size: 0.78rem; margin-top: 0.1rem; }
 .item .pastille-rouge {
@@ -153,7 +202,7 @@ main { padding-top: 1.6rem; }
 
 .bloc { margin-bottom: 1.3rem; }
 .bloc h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
-.bloc .posture-txt { background: #f0f4f9; border-left: 4px solid var(--primary); padding: 0.8rem 1rem; border-radius: 6px; }
+.bloc .posture-txt { background: var(--accent-soft); border-left: 4px solid var(--primary); padding: 0.8rem 1rem; border-radius: 6px; }
 
 .conseil-item {
   border: 1px solid var(--border);
