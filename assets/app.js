@@ -191,6 +191,12 @@
       rang = Math.min(rang + cv.bump, 4);
     }
 
+    // N4 (Alerte) réservé à la souffrance installée ou aux drapeaux rouges :
+    // la convergence d'une situation relationnelle/performance ne dépasse pas N3.
+    if (data.config.n4_reserve_sante && famille !== "sante") {
+      rang = Math.min(rang, 3);
+    }
+
     return { niveau: nivByRang(rang), famille: famille, sig: sig, ctx: ctx, redFlag: false };
   }
 

@@ -70,3 +70,5 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - **Seuils** N1 1-2 · N2 3-5 · N3 6-9 · N4 ≥10 : base validée (à recalibrer)
 - Hébergement : **dépôt public + Pages** (provisoire, le temps de l'aperçu)
 - Suivi via **BACKLOG.md**, validation en **direct sur la branche**
+- **Conseils & « à faire » ré-arbitrés** (v2.1) : chaque conseil = lecture + réflexe + piège ; démarches par niveau revues
+- **N4 (Alerte) réservé** à la souffrance installée ou aux drapeaux rouges ; la convergence relationnel/performance plafonne à N3
