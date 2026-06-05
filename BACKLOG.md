@@ -12,18 +12,18 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 ## A — Contenu RPS
 *Libellés des signaux/contextes, formulation des conseils, ajout/retrait d'items — `data/contenu.json`*
 
-- [ ] Relire et valider tous les **libellés** de signaux
-- [ ] Relire et valider tous les **conseils** (signaux + contexte)
-- [ ] Vérifier les **contextes ajoutés** (manque de soutien hiérarchique, perte de sens / qualité empêchée)
+- [x] **Conseils réécrits** : courts, orientés action (v2)
+- [x] Signaux **classés en 3 familles de gravité** (santé / relationnel / performance)
+- [ ] Relire/valider les **libellés** et la répartition par famille (ex. isolement : santé ou relationnel ?)
 - [ ] Identifier d'éventuels **signaux/contextes manquants**
 
 ## B — Modèle de criticité
-*Poids, drapeaux rouges, seuils, multiplicateur — `data/contenu.json` + `CADRAGE.md`*
+*Matrice gravité × installation + convergence — `data/contenu.json` + `CADRAGE.md`*
 
-- [ ] Recalibrer les **poids** des signaux après relecture métier
-- [ ] Valider les **seuils** N1→N4 après premiers tests terrain
-- [ ] Confirmer la liste des **drapeaux rouges**
-- [ ] Statuer sur le **multiplicateur de contexte** (base 1, +0,1/facteur, plafond 1,5)
+- [x] **Nouveau modèle** : matrice gravité × installation (ponctuel/répété/installé) + convergence
+- [x] Drapeaux rouges (propos inquiétants, mal-être exprimé) → N4
+- [ ] Valider la **matrice** et les règles de **convergence** après tests terrain
+- [ ] Mettre à jour `CADRAGE.md` pour refléter le modèle v2
 
 ## C — Ressources internes Groupama d'Oc
 *Brancher les dispositifs réels — `data/contenu.json`*
@@ -56,8 +56,9 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 
 ## ✅ Déjà fait
 - [x] Cadrage du projet — modèle, théorie (Gollac/Karasek/Siegrist), architecture (`CADRAGE.md`)
-- [x] v1 de l'outil — accueil + check-list + restitution (signaux pondérés, drapeaux rouges, multiplicateur)
-- [x] 20 signaux + 15 contextes avec conseils (`data/contenu.json`)
+- [x] v1 — check-list + restitution (signaux pondérés)
+- [x] **v2 — refonte complète** : parcours en 3 étapes (sans scroll), modèle matriciel gravité × installation + convergence, restitution orientée action (posture / à faire / à éviter / orientation) + détail repliable, conseils réécrits
+- [x] 20 signaux + 15 contextes (`data/contenu.json`)
 - [x] Habillage aux couleurs Groupama d'Oc + intégration du logo
 - [x] Déploiement GitHub Pages (mise à jour auto à chaque push)
 

@@ -5,281 +5,267 @@
   "use strict";
 
   var data = null;
-  var etat = { signaux: {}, contexte: {} }; // id -> true/false
+  var etat = { signaux: {}, contexte: {}, temporalite: "ponctuel" };
+  var STEPS = ["accueil", "signaux", "contexte", "resultat"];
+  var step = 0;
 
-  /* ---------- Utilitaires DOM ---------- */
-  function $(sel) { return document.querySelector(sel); }
-  function el(tag, cls) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    return n;
-  }
-  function montrer(id) {
-    ["ecran-accueil", "ecran-checklist", "ecran-resultat"].forEach(function (e) {
-      $("#" + e).hidden = (e !== id);
+  function $(s) { return document.querySelector(s); }
+  function el(t, c) { var n = document.createElement(t); if (c) n.className = c; return n; }
+
+  /* ---------- Chargement ---------- */
+  fetch("data/contenu.json", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(function (json) { data = json; init(); })
+    .catch(function (err) {
+      $("#app").innerHTML =
+        '<section class="step"><h2>Chargement impossible</h2><p>Le contenu n\'a pas pu être chargé (' +
+        String(err) + ').</p><p class="opt">En local, lancez un petit serveur (voir le README).</p></section>';
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
 
-  /* ---------- Chargement des données ---------- */
-  function charger() {
-    return fetch("data/contenu.json", { cache: "no-store" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      });
-  }
-
-  /* ---------- Accueil ---------- */
-  function rendreAccueil() {
+  /* ---------- Initialisation ---------- */
+  function init() {
     var m = data.meta;
     $("#app-titre").textContent = m.titre;
     document.title = m.titre + " — Aide au manager";
     $("#app-sous-titre").textContent = m.sous_titre || "";
+    $("#prudence").textContent = m.prudence || "";
+
+    // Accueil
     $("#accueil-intro").textContent = m.accueil.intro;
     var ul = $("#accueil-points");
-    ul.innerHTML = "";
-    (m.accueil.points || []).forEach(function (p) {
-      var li = el("li");
-      li.textContent = p;
-      ul.appendChild(li);
-    });
-    $("#btn-commencer").textContent = m.accueil.cta || "Commencer";
-    $("#prudence").textContent = m.prudence || "";
-  }
+    (m.accueil.points || []).forEach(function (p) { var li = el("li"); li.textContent = p; ul.appendChild(li); });
 
-  /* ---------- Check-list ---------- */
-  function rendreItem(item, type, dansCategorie) {
-    var label = el("label", "item");
-    label.setAttribute("data-id", item.id);
-
-    var input = el("input");
-    input.type = "checkbox";
-    input.checked = !!etat[type][item.id];
-    input.addEventListener("change", function () {
-      etat[type][item.id] = input.checked;
-      label.classList.toggle("coche", input.checked);
-      majCompteurs();
+    // Légende des familles
+    var leg = $("#legende");
+    Object.keys(m.familles).forEach(function (k) {
+      var f = m.familles[k];
+      var s = el("span", "leg-item");
+      s.textContent = f.puce + " " + f.libelle;
+      leg.appendChild(s);
     });
 
-    var span = el("span", "libelle");
-    span.textContent = item.libelle;
-
-    if (item.drapeau_rouge) {
-      var flag = el("span", "pastille-rouge");
-      flag.textContent = "🚩 prioritaire";
-      span.appendChild(flag);
-    }
-    if (!dansCategorie && item.famille_gollac) {
-      var fam = el("span", "famille");
-      fam.textContent = item.famille_gollac;
-      span.appendChild(fam);
-    }
-
-    label.classList.toggle("coche", input.checked);
-    label.appendChild(input);
-    label.appendChild(span);
-    return label;
+    rendreSignaux();
+    rendreTemporalite();
+    rendreContexte();
+    brancher();
+    aller(0);
   }
 
-  function rendreListeSignaux() {
-    var cont = $("#liste-signaux");
+  /* ---------- Étape 1 : signaux (par famille) ---------- */
+  function rendreSignaux() {
+    var cont = $("#grille-signaux");
     cont.innerHTML = "";
-    // Regrouper par catégorie en conservant l'ordre d'apparition.
-    var ordre = [];
-    var groupes = {};
-    data.signaux.forEach(function (s) {
-      var c = s.categorie || "Autres";
-      if (!groupes[c]) { groupes[c] = []; ordre.push(c); }
-      groupes[c].push(s);
+    Object.keys(data.meta.familles).forEach(function (fid) {
+      var f = data.meta.familles[fid];
+      var sigs = data.signaux.filter(function (s) { return s.famille === fid; });
+      if (!sigs.length) return;
+      var col = el("div", "famille-col");
+      col.style.setProperty("--fc", f.couleur);
+      var h = el("p", "famille-titre");
+      h.innerHTML = '<span class="puce">' + f.puce + "</span> " + f.libelle;
+      col.appendChild(h);
+      sigs.forEach(function (s) { col.appendChild(chip(s, "signaux")); });
+      cont.appendChild(col);
     });
-    ordre.forEach(function (cat) {
-      var titre = el("p", "cat-titre");
-      titre.textContent = cat;
-      cont.appendChild(titre);
-      groupes[cat].forEach(function (s) {
-        cont.appendChild(rendreItem(s, "signaux", true));
+  }
+
+  /* ---------- Étape 2 : temporalité + contexte ---------- */
+  function rendreTemporalite() {
+    var cont = $("#choix-temporalite");
+    cont.innerHTML = "";
+    data.meta.temporalite.forEach(function (t) {
+      var b = el("button", "seg");
+      b.type = "button";
+      b.setAttribute("role", "radio");
+      b.dataset.id = t.id;
+      b.innerHTML = '<span class="seg-titre">' + t.libelle + "</span><span class=\"seg-aide\">" + t.aide + "</span>";
+      b.addEventListener("click", function () {
+        etat.temporalite = t.id;
+        cont.querySelectorAll(".seg").forEach(function (x) {
+          var on = x === b;
+          x.classList.toggle("actif", on);
+          x.setAttribute("aria-checked", on ? "true" : "false");
+        });
       });
+      cont.appendChild(b);
     });
+    cont.querySelector(".seg").click(); // défaut : ponctuel
   }
 
-  function rendreListeContexte() {
-    var cont = $("#liste-contexte");
+  function rendreContexte() {
+    var cont = $("#grille-contexte");
     cont.innerHTML = "";
-    data.contexte.forEach(function (c) {
-      cont.appendChild(rendreItem(c, "contexte", false));
+    data.contexte.forEach(function (c) { cont.appendChild(chip(c, "contexte")); });
+  }
+
+  /* ---------- Chip réutilisable ---------- */
+  function chip(item, type) {
+    var b = el("button", "chip");
+    b.type = "button";
+    b.dataset.id = item.id;
+    b.setAttribute("aria-pressed", "false");
+    var txt = item.libelle + (item.drapeau_rouge ? " 🚩" : "");
+    b.textContent = txt;
+    b.addEventListener("click", function () {
+      var on = !etat[type][item.id];
+      etat[type][item.id] = on;
+      b.classList.toggle("actif", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
     });
+    return b;
   }
 
-  function majCompteurs() {
-    $("#compteur-signaux").textContent = compter("signaux");
-    $("#compteur-contexte").textContent = compter("contexte");
-  }
-  function compter(type) {
-    return Object.keys(etat[type]).filter(function (k) { return etat[type][k]; }).length;
-  }
-  function selectionnes(type, source) {
-    return source.filter(function (it) { return etat[type][it.id]; });
-  }
-
-  /* ---------- Calcul de la criticité ---------- */
-  function calculer() {
-    var sigSel = selectionnes("signaux", data.signaux);
-    var ctxSel = selectionnes("contexte", data.contexte);
-
-    var scoreSignaux = sigSel.reduce(function (acc, s) { return acc + (s.poids || 0); }, 0);
-
-    var cfg = data.config || {};
-    var base = cfg.multiplicateur_base != null ? cfg.multiplicateur_base : 1;
-    var pas = cfg.multiplicateur_par_contexte != null ? cfg.multiplicateur_par_contexte : 0.1;
-    var plafond = cfg.multiplicateur_max != null ? cfg.multiplicateur_max : 1.5;
-    var multiplicateur = Math.min(base + pas * ctxSel.length, plafond);
-
-    var score = scoreSignaux * multiplicateur;
-    var drapeauRouge = sigSel.some(function (s) { return s.drapeau_rouge; });
-
-    var niveau = determinerNiveau(score, drapeauRouge, sigSel.length);
-
-    return {
-      niveau: niveau,
-      score: score,
-      drapeauRouge: drapeauRouge,
-      signaux: sigSel,
-      contexte: ctxSel
-    };
+  /* ---------- Navigation ---------- */
+  function brancher() {
+    $("#btn-suivant").addEventListener("click", function () {
+      if (step < STEPS.length - 1) {
+        if (STEPS[step + 1] === "resultat") calculerEtRendre();
+        aller(step + 1);
+      } else {
+        recommencer();
+      }
+    });
+    $("#btn-retour").addEventListener("click", function () { if (step > 0) aller(step - 1); });
   }
 
-  function determinerNiveau(score, drapeauRouge, nbSignaux) {
-    if (nbSignaux === 0) return trouverNiveau("N0");
-    if (drapeauRouge) return trouverNiveau("N4");
-    // Niveaux avec seuil > 0, du plus haut au plus bas.
-    var paliers = data.niveaux
-      .filter(function (n) { return n.seuil_min > 0; })
-      .sort(function (a, b) { return b.seuil_min - a.seuil_min; });
-    for (var i = 0; i < paliers.length; i++) {
-      if (score >= paliers[i].seuil_min) return paliers[i];
+  function aller(i) {
+    step = i;
+    STEPS.forEach(function (name, idx) { $("#step-" + name).hidden = idx !== i; });
+
+    // Fil d'étapes
+    $("#steps").querySelectorAll("li").forEach(function (li) {
+      var n = parseInt(li.dataset.step, 10);
+      li.classList.toggle("actif", n === i);
+      li.classList.toggle("fait", n < i);
+    });
+
+    // Boutons
+    var suivant = $("#btn-suivant");
+    $("#btn-retour").hidden = (i === 0);
+    if (i === 0) suivant.textContent = "Commencer";
+    else if (STEPS[i] === "contexte") suivant.textContent = "Voir le résultat";
+    else if (STEPS[i] === "resultat") suivant.textContent = "Nouvelle situation";
+    else suivant.textContent = "Suivant →";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function recommencer() {
+    etat = { signaux: {}, contexte: {}, temporalite: "ponctuel" };
+    document.querySelectorAll(".chip.actif").forEach(function (c) {
+      c.classList.remove("actif"); c.setAttribute("aria-pressed", "false");
+    });
+    $("#choix-temporalite").querySelector(".seg").click();
+    var d = $("#detail"); if (d) d.open = false;
+    aller(1);
+  }
+
+  /* ---------- Sélections ---------- */
+  function selSignaux() { return data.signaux.filter(function (s) { return etat.signaux[s.id]; }); }
+  function selContexte() { return data.contexte.filter(function (c) { return etat.contexte[c.id]; }); }
+
+  /* ---------- Calcul de criticité (matrice gravité × installation + convergence) ---------- */
+  function evaluer() {
+    var sig = selSignaux();
+    var ctx = selContexte();
+    if (!sig.length) return { niveau: niv("N0"), famille: null, sig: sig, ctx: ctx, redFlag: false };
+
+    // Famille la plus grave parmi les signaux cochés
+    var famille = null, gmax = -1;
+    sig.forEach(function (s) {
+      var g = data.meta.familles[s.famille].gravite;
+      if (g > gmax) { gmax = g; famille = s.famille; }
+    });
+
+    var redFlag = sig.some(function (s) { return s.drapeau_rouge; });
+    if (redFlag) return { niveau: niv("N4"), famille: famille, sig: sig, ctx: ctx, redFlag: true };
+
+    // Niveau de base par la matrice
+    var baseId = data.config.matrice[famille][etat.temporalite];
+    var rang = niv(baseId).rang;
+
+    // Convergence : faisceau de signaux, ou signaux + contexte
+    var cv = data.config.convergence;
+    if (sig.length >= cv.signaux_seuil ||
+        (sig.length >= cv.signaux_min_avec_contexte && ctx.length >= cv.contexte_seuil)) {
+      rang = Math.min(rang + cv.bump, 4);
     }
-    return trouverNiveau("N1");
+
+    return { niveau: nivByRang(rang), famille: famille, sig: sig, ctx: ctx, redFlag: false };
   }
-  function trouverNiveau(id) {
-    return data.niveaux.filter(function (n) { return n.id === id; })[0] || data.niveaux[0];
-  }
+
+  function niv(id) { return data.niveaux.filter(function (n) { return n.id === id; })[0]; }
+  function nivByRang(r) { return data.niveaux.filter(function (n) { return n.rang === r; })[0]; }
 
   /* ---------- Restitution ---------- */
-  function rendreResultat(res) {
+  function calculerEtRendre() {
+    var res = evaluer();
     var n = res.niveau;
 
     var bandeau = $("#bandeau-niveau");
-    bandeau.style.background = n.couleur || "#2c5282";
-    bandeau.innerHTML = "";
-    var idSpan = el("div", "niveau-id");
-    idSpan.textContent = "Niveau de criticité " + n.id;
-    var libSpan = el("div", "niveau-libelle");
-    libSpan.textContent = n.libelle;
-    bandeau.appendChild(idSpan);
-    bandeau.appendChild(libSpan);
+    bandeau.style.background = n.couleur;
+    bandeau.innerHTML =
+      '<div class="niv-id">Niveau de criticité ' + n.id + "</div>" +
+      '<div class="niv-libelle">' + n.libelle + "</div>" +
+      '<p class="niv-resume">' + n.resume + "</p>";
 
-    var posture = $("#bloc-posture");
-    posture.innerHTML = "";
-    var hP = el("h3"); hP.textContent = "Posture recommandée";
-    var pP = el("p", "posture-txt"); pP.textContent = n.posture || "";
-    posture.appendChild(hP);
-    posture.appendChild(pP);
-    if (res.drapeauRouge) {
-      var alerte = el("p", "posture-txt");
-      alerte.style.borderLeftColor = "#c53030";
-      alerte.style.background = "#fff5f5";
-      alerte.innerHTML = "<strong>Un signal prioritaire a été coché.</strong> La situation est traitée au niveau le plus élevé par précaution.";
-      posture.appendChild(alerte);
-    }
-
-    rendreConseils($("#bloc-conseils-signaux"), "Conseils sur les signaux observés", res.signaux, false);
-    rendreConseils($("#bloc-conseils-contexte"), "Conseils sur le contexte de travail", res.contexte, true);
-
-    var rb = $("#bloc-ressources");
-    rb.innerHTML = "";
-    var hR = el("h3"); hR.textContent = "Ressources à mobiliser";
-    rb.appendChild(hR);
-    if (n.ressources && n.ressources.length) {
-      var ul = el("ul", "ressources-liste");
-      n.ressources.forEach(function (r) {
-        var li = el("li"); li.textContent = r;
-        ul.appendChild(li);
-      });
-      rb.appendChild(ul);
+    // Lecture de la situation (transparence du modèle)
+    var lecture = $("#lecture");
+    if (res.famille) {
+      var f = data.meta.familles[res.famille];
+      var tlib = data.meta.temporalite.filter(function (t) { return t.id === etat.temporalite; })[0].libelle;
+      var bits = [f.puce + " " + f.libelle, "Installation : " + tlib,
+        res.sig.length + (res.sig.length > 1 ? " signaux" : " signal") +
+        (res.ctx.length ? " · " + res.ctx.length + " facteur" + (res.ctx.length > 1 ? "s" : "") + " de contexte" : "")];
+      lecture.textContent = "Lecture : " + bits.join("  ·  ");
+      lecture.hidden = false;
+      if (res.redFlag) lecture.textContent += "  ·  🚩 signal prioritaire";
     } else {
-      var v = el("p", "vide"); v.textContent = "Aucune ressource spécifique à ce niveau.";
-      rb.appendChild(v);
+      lecture.hidden = true;
+    }
+
+    // Cartes d'action
+    var cols = $(".resultat-cols");
+    cols.style.display = (n.id === "N0") ? "none" : "";
+    $("#detail").style.display = (n.id === "N0") ? "none" : "";
+
+    if (n.id !== "N0") {
+      $("#posture").textContent = n.posture;
+      remplirListe($("#demarche"), n.demarche);
+      remplirListe($("#a-eviter"), data.meta.a_eviter);
+      remplirListe($("#ressources"), n.ressources);
+      rendreDetail(res);
     }
   }
 
-  function rendreConseils(bloc, titre, items, avecFamille) {
-    bloc.innerHTML = "";
-    var h = el("h3"); h.textContent = titre;
-    bloc.appendChild(h);
-    if (!items.length) {
-      var v = el("p", "vide"); v.textContent = "Aucun élément coché.";
-      bloc.appendChild(v);
-      return;
+  function remplirListe(node, items) {
+    node.innerHTML = "";
+    (items || []).forEach(function (t) { var li = el("li"); li.textContent = t; node.appendChild(li); });
+  }
+
+  function rendreDetail(res) {
+    var box = $("#detail-contenu");
+    box.innerHTML = "";
+    if (res.sig.length) {
+      box.appendChild(sousTitre("Signaux observés"));
+      res.sig.forEach(function (s) {
+        var f = data.meta.familles[s.famille];
+        box.appendChild(ligneConseil(f.puce + " " + s.libelle, s.conseil));
+      });
     }
-    items.forEach(function (it) {
-      var card = el("div", "conseil-item");
-      var t = el("div", "titre");
-      var lib = document.createElement("span");
-      lib.textContent = it.libelle;
-      t.appendChild(lib);
-      if (avecFamille && it.famille_gollac) {
-        var fam = el("span", "famille");
-        fam.textContent = "· " + it.famille_gollac;
-        t.appendChild(fam);
-      }
-      var p = el("p"); p.textContent = it.conseil || "";
-      card.appendChild(t);
-      card.appendChild(p);
-      bloc.appendChild(card);
-    });
+    if (res.ctx.length) {
+      box.appendChild(sousTitre("Contexte de travail"));
+      res.ctx.forEach(function (c) {
+        box.appendChild(ligneConseil(c.libelle + " — " + c.famille_gollac, c.conseil));
+      });
+    }
   }
-
-  /* ---------- Réinitialisation ---------- */
-  function toutDecocher() {
-    etat = { signaux: {}, contexte: {} };
-    document.querySelectorAll(".item input").forEach(function (i) {
-      i.checked = false;
-      i.closest(".item").classList.remove("coche");
-    });
-    majCompteurs();
+  function sousTitre(t) { var p = el("p", "detail-soustitre"); p.textContent = t; return p; }
+  function ligneConseil(titre, txt) {
+    var d = el("div", "detail-item");
+    var b = el("p", "detail-item-titre"); b.textContent = titre;
+    var p = el("p"); p.textContent = txt;
+    d.appendChild(b); d.appendChild(p);
+    return d;
   }
-
-  /* ---------- Évènements ---------- */
-  function brancher() {
-    $("#btn-commencer").addEventListener("click", function () { montrer("ecran-checklist"); });
-    $("#btn-evaluer").addEventListener("click", function () {
-      rendreResultat(calculer());
-      montrer("ecran-resultat");
-    });
-    $("#btn-reset").addEventListener("click", toutDecocher);
-    $("#btn-modifier").addEventListener("click", function () { montrer("ecran-checklist"); });
-    $("#btn-recommencer").addEventListener("click", function () {
-      toutDecocher();
-      montrer("ecran-checklist");
-    });
-  }
-
-  /* ---------- Démarrage ---------- */
-  charger()
-    .then(function (json) {
-      data = json;
-      rendreAccueil();
-      rendreListeSignaux();
-      rendreListeContexte();
-      majCompteurs();
-      brancher();
-      montrer("ecran-accueil");
-    })
-    .catch(function (err) {
-      $("#main").innerHTML =
-        '<div class="ecran"><h2>Chargement impossible</h2><p>Le contenu n\'a pas pu être chargé (' +
-        String(err) +
-        ').</p><p class="vide">Si vous ouvrez le fichier directement depuis le disque, lancez plutôt un petit serveur local (voir le README).</p></div>';
-    });
 })();
