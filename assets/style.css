@@ -44,6 +44,7 @@ body {
 
 /* Repli si le logo officiel n'est pas fourni (assets/logo.png) */
 .brand-wordmark { display: inline-flex; align-items: center; gap: 0.55rem; }
+.brand-wordmark[hidden] { display: none; }
 .brand-wordmark .bw-mark {
   display: inline-flex;
   align-items: center;
