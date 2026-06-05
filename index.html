@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matrice de criticité — Aide au manager</title>
+  <meta name="description" content="Outil d'aide au manager en cas d'inquiétude pour un collaborateur. Aucune donnée n'est enregistrée." />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1 id="app-titre">Matrice de criticité</h1>
+      <p id="app-sous-titre" class="sous-titre"></p>
+    </div>
+  </header>
+
+  <main class="wrap" id="main">
+
+    <!-- Écran d'accueil -->
+    <section id="ecran-accueil" class="ecran" aria-labelledby="accueil-h">
+      <h2 id="accueil-h">À quoi sert cet outil&nbsp;?</h2>
+      <p id="accueil-intro" class="intro"></p>
+      <ul id="accueil-points" class="points"></ul>
+      <button id="btn-commencer" class="btn btn-primary" type="button">Commencer</button>
+    </section>
+
+    <!-- Écran check-list -->
+    <section id="ecran-checklist" class="ecran" hidden aria-labelledby="checklist-h">
+      <h2 id="checklist-h">Cochez ce que vous observez</h2>
+      <p class="aide-saisie">Sélectionnez les <strong>signaux d'alerte</strong> que vous constatez, puis le <strong>contexte de travail</strong> qui peut être en jeu.</p>
+
+      <div class="colonnes">
+        <div class="colonne">
+          <h3>Signaux d'alerte <span class="compteur" id="compteur-signaux">0</span></h3>
+          <div id="liste-signaux" class="liste"></div>
+        </div>
+        <div class="colonne">
+          <h3>Contexte de travail <span class="compteur" id="compteur-contexte">0</span></h3>
+          <div id="liste-contexte" class="liste"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-evaluer" class="btn btn-primary" type="button">Évaluer la situation</button>
+        <button id="btn-reset" class="btn btn-ghost" type="button">Tout décocher</button>
+      </div>
+    </section>
+
+    <!-- Écran résultat -->
+    <section id="ecran-resultat" class="ecran" hidden aria-labelledby="resultat-h">
+      <h2 id="resultat-h">Résultat</h2>
+      <div id="bandeau-niveau" class="bandeau-niveau" role="status"></div>
+      <div id="bloc-posture" class="bloc"></div>
+      <div id="bloc-conseils-signaux" class="bloc"></div>
+      <div id="bloc-conseils-contexte" class="bloc"></div>
+      <div id="bloc-ressources" class="bloc"></div>
+
+      <div class="actions">
+        <button id="btn-modifier" class="btn btn-ghost" type="button">Modifier mes réponses</button>
+        <button id="btn-recommencer" class="btn btn-primary" type="button">Nouvelle situation</button>
+      </div>
+    </section>
+
+    <p id="prudence" class="prudence" role="note"></p>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Aucune donnée saisie n'est enregistrée ni transmise — tout reste dans votre navigateur.</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

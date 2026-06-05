@@ -290,11 +290,14 @@ Emplacements prévus pour brancher tes dispositifs internes :
 
 ---
 
-## 11. Points ouverts à trancher
+## 11. Points tranchés
 
-- Les **seuils** de §4.3 te conviennent-ils comme base, ou tu as déjà une idée de
-  la gradation attendue ?
-- Garde-t-on les **4 ajouts de signaux** proposés (§5) ?
-- Veux-tu le bouton **« imprimer / exporter une synthèse »** ?
-- Une **introduction / écran d'accueil** rappelant le cadre et la confidentialité
-  avant d'entrer dans la check-list ?
+- **Seuils** de §4.3 : validés comme base (à recalibrer après tests terrain).
+- **4 ajouts de signaux** (§5) : conservés.
+- Bouton **« imprimer / exporter »** : non retenu.
+- **Écran d'accueil** : oui — bref rappel de ce que fait l'outil + cadre /
+  confidentialité avant la check-list.
+
+> Mise en œuvre : la première version de l'outil (page statique + `data/contenu.json`)
+> est en place. Reste à brancher les **ressources internes** (§9) et à recalibrer
+> les seuils après les premiers retours managers.
