@@ -1,18 +1,19 @@
 /* Matrice de criticité — logique côté navigateur.
+ * Approche par item : chaque signal porte sa propre criticité et son conseil.
+ * Le niveau d'ensemble = le signal le plus sérieux coché (aucune pondération).
  * Aucune donnée n'est stockée ni transmise : tout vit dans cette page. */
 
 (function () {
   "use strict";
 
   var data = null;
-  var etat = { signaux: {}, contexte: {}, temporalite: "ponctuel" };
+  var etat = { signaux: {}, contexte: {} };
   var STEPS = ["accueil", "signaux", "contexte", "resultat"];
   var step = 0;
 
   function $(s) { return document.querySelector(s); }
   function el(t, c) { var n = document.createElement(t); if (c) n.className = c; return n; }
 
-  /* ---------- Chargement ---------- */
   fetch("data/contenu.json", { cache: "no-store" })
     .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
     .then(function (json) { data = json; init(); })
@@ -22,7 +23,6 @@
         String(err) + ').</p><p class="opt">En local, lancez un petit serveur (voir le README).</p></section>';
     });
 
-  /* ---------- Initialisation ---------- */
   function init() {
     var m = data.meta;
     $("#app-titre").textContent = m.titre;
@@ -30,12 +30,10 @@
     $("#app-sous-titre").textContent = m.sous_titre || "";
     $("#prudence").textContent = m.prudence || "";
 
-    // Accueil
     $("#accueil-intro").textContent = m.accueil.intro;
     var ul = $("#accueil-points");
     (m.accueil.points || []).forEach(function (p) { var li = el("li"); li.textContent = p; ul.appendChild(li); });
 
-    // Légende des familles
     var leg = $("#legende");
     Object.keys(m.familles).forEach(function (k) {
       var f = m.familles[k];
@@ -45,13 +43,12 @@
     });
 
     rendreSignaux();
-    rendreTemporalite();
     rendreContexte();
     brancher();
     aller(0);
   }
 
-  /* ---------- Étape 1 : signaux (par famille) ---------- */
+  /* ---------- Étape signaux : colonnes par famille ---------- */
   function rendreSignaux() {
     var cont = $("#grille-signaux");
     cont.innerHTML = "";
@@ -69,43 +66,18 @@
     });
   }
 
-  /* ---------- Étape 2 : temporalité + contexte ---------- */
-  function rendreTemporalite() {
-    var cont = $("#choix-temporalite");
-    cont.innerHTML = "";
-    data.meta.temporalite.forEach(function (t) {
-      var b = el("button", "seg");
-      b.type = "button";
-      b.setAttribute("role", "radio");
-      b.dataset.id = t.id;
-      b.innerHTML = '<span class="seg-titre">' + t.libelle + "</span><span class=\"seg-aide\">" + t.aide + "</span>";
-      b.addEventListener("click", function () {
-        etat.temporalite = t.id;
-        cont.querySelectorAll(".seg").forEach(function (x) {
-          var on = x === b;
-          x.classList.toggle("actif", on);
-          x.setAttribute("aria-checked", on ? "true" : "false");
-        });
-      });
-      cont.appendChild(b);
-    });
-    cont.querySelector(".seg").click(); // défaut : ponctuel
-  }
-
   function rendreContexte() {
     var cont = $("#grille-contexte");
     cont.innerHTML = "";
     data.contexte.forEach(function (c) { cont.appendChild(chip(c, "contexte")); });
   }
 
-  /* ---------- Chip réutilisable ---------- */
   function chip(item, type) {
     var b = el("button", "chip");
     b.type = "button";
     b.dataset.id = item.id;
     b.setAttribute("aria-pressed", "false");
-    var txt = item.libelle + (item.drapeau_rouge ? " 🚩" : "");
-    b.textContent = txt;
+    b.textContent = item.libelle;
     b.addEventListener("click", function () {
       var on = !etat[type][item.id];
       etat[type][item.id] = on;
@@ -119,11 +91,9 @@
   function brancher() {
     $("#btn-suivant").addEventListener("click", function () {
       if (step < STEPS.length - 1) {
-        if (STEPS[step + 1] === "resultat") calculerEtRendre();
+        if (STEPS[step + 1] === "resultat") rendreResultat();
         aller(step + 1);
-      } else {
-        recommencer();
-      }
+      } else { recommencer(); }
     });
     $("#btn-retour").addEventListener("click", function () { if (step > 0) aller(step - 1); });
   }
@@ -131,80 +101,45 @@
   function aller(i) {
     step = i;
     STEPS.forEach(function (name, idx) { $("#step-" + name).hidden = idx !== i; });
-
-    // Fil d'étapes
     $("#steps").querySelectorAll("li").forEach(function (li) {
       var n = parseInt(li.dataset.step, 10);
       li.classList.toggle("actif", n === i);
       li.classList.toggle("fait", n < i);
     });
-
-    // Boutons
     var suivant = $("#btn-suivant");
     $("#btn-retour").hidden = (i === 0);
     if (i === 0) suivant.textContent = "Commencer";
     else if (STEPS[i] === "contexte") suivant.textContent = "Voir le résultat";
     else if (STEPS[i] === "resultat") suivant.textContent = "Nouvelle situation";
     else suivant.textContent = "Suivant →";
-
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function recommencer() {
-    etat = { signaux: {}, contexte: {}, temporalite: "ponctuel" };
+    etat = { signaux: {}, contexte: {} };
     document.querySelectorAll(".chip.actif").forEach(function (c) {
       c.classList.remove("actif"); c.setAttribute("aria-pressed", "false");
     });
-    $("#choix-temporalite").querySelector(".seg").click();
-    var d = $("#detail"); if (d) d.open = false;
     aller(1);
   }
 
   /* ---------- Sélections ---------- */
   function selSignaux() { return data.signaux.filter(function (s) { return etat.signaux[s.id]; }); }
   function selContexte() { return data.contexte.filter(function (c) { return etat.contexte[c.id]; }); }
+  function niv(id) { return data.niveaux.filter(function (n) { return n.id === id; })[0]; }
 
-  /* ---------- Calcul de criticité (matrice gravité × installation + convergence) ---------- */
+  /* ---------- Évaluation : le plus sérieux signal coché ---------- */
   function evaluer() {
     var sig = selSignaux();
     var ctx = selContexte();
-    if (!sig.length) return { niveau: niv("N0"), famille: null, sig: sig, ctx: ctx, redFlag: false };
-
-    // Famille la plus grave parmi les signaux cochés
-    var famille = null, gmax = -1;
-    sig.forEach(function (s) {
-      var g = data.meta.familles[s.famille].gravite;
-      if (g > gmax) { gmax = g; famille = s.famille; }
-    });
-
-    var redFlag = sig.some(function (s) { return s.drapeau_rouge; });
-    if (redFlag) return { niveau: niv("N4"), famille: famille, sig: sig, ctx: ctx, redFlag: true };
-
-    // Niveau de base par la matrice
-    var baseId = data.config.matrice[famille][etat.temporalite];
-    var rang = niv(baseId).rang;
-
-    // Convergence : faisceau de signaux, ou signaux + contexte
-    var cv = data.config.convergence;
-    if (sig.length >= cv.signaux_seuil ||
-        (sig.length >= cv.signaux_min_avec_contexte && ctx.length >= cv.contexte_seuil)) {
-      rang = Math.min(rang + cv.bump, 4);
-    }
-
-    // N4 (Alerte) réservé à la souffrance installée ou aux drapeaux rouges :
-    // la convergence d'une situation relationnelle/performance ne dépasse pas N3.
-    if (data.config.n4_reserve_sante && famille !== "sante") {
-      rang = Math.min(rang, 3);
-    }
-
-    return { niveau: nivByRang(rang), famille: famille, sig: sig, ctx: ctx, redFlag: false };
+    if (!sig.length) return { niveau: niv("N0"), sig: sig, ctx: ctx };
+    var maxRang = 0;
+    sig.forEach(function (s) { var r = niv(s.niveau).rang; if (r > maxRang) maxRang = r; });
+    return { niveau: data.niveaux.filter(function (n) { return n.rang === maxRang; })[0], sig: sig, ctx: ctx };
   }
 
-  function niv(id) { return data.niveaux.filter(function (n) { return n.id === id; })[0]; }
-  function nivByRang(r) { return data.niveaux.filter(function (n) { return n.rang === r; })[0]; }
-
   /* ---------- Restitution ---------- */
-  function calculerEtRendre() {
+  function rendreResultat() {
     var res = evaluer();
     var n = res.niveau;
 
@@ -215,27 +150,21 @@
       '<div class="niv-libelle">' + n.libelle + "</div>" +
       '<p class="niv-resume">' + n.resume + "</p>";
 
-    // Lecture de la situation (transparence du modèle)
     var lecture = $("#lecture");
-    if (res.famille) {
-      var f = data.meta.familles[res.famille];
-      var tlib = data.meta.temporalite.filter(function (t) { return t.id === etat.temporalite; })[0].libelle;
-      var bits = [f.puce + " " + f.libelle, "Installation : " + tlib,
-        res.sig.length + (res.sig.length > 1 ? " signaux" : " signal") +
-        (res.ctx.length ? " · " + res.ctx.length + " facteur" + (res.ctx.length > 1 ? "s" : "") + " de contexte" : "")];
-      lecture.textContent = "Lecture : " + bits.join("  ·  ");
+    if (res.sig.length) {
       lecture.hidden = false;
-      if (res.redFlag) lecture.textContent += "  ·  🚩 signal prioritaire";
-    } else {
-      lecture.hidden = true;
-    }
+      lecture.textContent = res.sig.length + (res.sig.length > 1 ? " signaux cochés" : " signal coché") +
+        (res.ctx.length ? " · " + res.ctx.length + " élément" + (res.ctx.length > 1 ? "s" : "") + " de contexte" : "") +
+        " — la conduite est donnée par le signal le plus sérieux.";
+    } else { lecture.hidden = true; }
 
-    // Cartes d'action
     var cols = $(".resultat-cols");
-    cols.style.display = (n.id === "N0") ? "none" : "";
-    $("#detail").style.display = (n.id === "N0") ? "none" : "";
+    var bloc = $(".bloc-detail");
+    var afficher = (n.id !== "N0");
+    cols.style.display = afficher ? "" : "none";
+    bloc.style.display = afficher ? "" : "none";
 
-    if (n.id !== "N0") {
+    if (afficher) {
       $("#posture").textContent = n.posture;
       remplirListe($("#demarche"), n.demarche);
       remplirListe($("#a-eviter"), data.meta.a_eviter);
@@ -253,26 +182,36 @@
   function rendreDetail(res) {
     var box = $("#detail-contenu");
     box.innerHTML = "";
+
     if (res.sig.length) {
-      box.appendChild(sousTitre("Signaux observés"));
-      res.sig.forEach(function (s) {
-        var f = data.meta.familles[s.famille];
-        box.appendChild(ligneConseil(f.puce + " " + s.libelle, s.conseil));
+      // Signaux triés du plus sérieux au moins sérieux
+      var sig = res.sig.slice().sort(function (a, b) { return niv(b.niveau).rang - niv(a.niveau).rang; });
+      sig.forEach(function (s) {
+        var nv = niv(s.niveau);
+        var item = el("div", "detail-item");
+        var titre = el("p", "detail-item-titre");
+        var tag = el("span", "tag-niveau");
+        tag.style.background = nv.couleur;
+        tag.textContent = nv.libelle;
+        titre.appendChild(tag);
+        titre.appendChild(document.createTextNode(" " + s.libelle));
+        var p = el("p"); p.textContent = s.conseil;
+        item.appendChild(titre); item.appendChild(p);
+        box.appendChild(item);
       });
     }
+
     if (res.ctx.length) {
-      box.appendChild(sousTitre("Contexte de travail"));
+      box.appendChild(sousTitre("Contexte de travail — leviers d'action"));
       res.ctx.forEach(function (c) {
-        box.appendChild(ligneConseil(c.libelle + " — " + c.famille_gollac, c.conseil));
+        var item = el("div", "detail-item");
+        var titre = el("p", "detail-item-titre");
+        titre.textContent = c.libelle + " — " + c.famille_gollac;
+        var p = el("p"); p.textContent = c.conseil;
+        item.appendChild(titre); item.appendChild(p);
+        box.appendChild(item);
       });
     }
   }
   function sousTitre(t) { var p = el("p", "detail-soustitre"); p.textContent = t; return p; }
-  function ligneConseil(titre, txt) {
-    var d = el("div", "detail-item");
-    var b = el("p", "detail-item-titre"); b.textContent = titre;
-    var p = el("p"); p.textContent = txt;
-    d.appendChild(b); d.appendChild(p);
-    return d;
-  }
 })();

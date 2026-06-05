@@ -123,13 +123,18 @@ body {
 .ressources li { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.35rem; background: #fafbfc; font-size: 0.92rem; }
 .appui-note { margin: 0.5rem 0 0; font-size: 0.83rem; color: var(--muted); font-style: italic; }
 
-/* Détail repliable */
-.detail { margin-top: 1rem; border: 1px solid var(--border); border-radius: 12px; padding: 0.3rem 0.9rem; background: #fff; }
-.detail > summary { cursor: pointer; font-weight: 600; padding: 0.5rem 0; color: var(--primary); }
-.detail-soustitre { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 0.6rem 0 0.3rem; }
-.detail-item { padding: 0.5rem 0; border-top: 1px solid var(--border); }
-.detail-item-titre { font-weight: 600; margin: 0 0 0.15rem; }
+/* Détail par item (visible) */
+.bloc-detail { margin-top: 0.2rem; }
+.detail-soustitre { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 0.9rem 0 0.3rem; }
+.detail-item { padding: 0.55rem 0; border-top: 1px solid var(--border); }
+.detail-item:first-child { border-top: none; padding-top: 0.2rem; }
+.detail-item-titre { font-weight: 600; margin: 0 0 0.2rem; }
 .detail-item p { margin: 0; }
+.tag-niveau {
+  display: inline-block; vertical-align: 1px;
+  color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.02em;
+  padding: 0.1rem 0.5rem; border-radius: 999px; margin-right: 0.15rem;
+}
 
 /* ---------- Navigation ---------- */
 .nav { display: flex; align-items: center; gap: 0.7rem; margin-top: 1rem; }

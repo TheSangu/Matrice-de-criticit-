@@ -58,6 +58,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [x] Cadrage du projet — modèle, théorie (Gollac/Karasek/Siegrist), architecture (`CADRAGE.md`)
 - [x] v1 — check-list + restitution (signaux pondérés)
 - [x] **v2 — refonte complète** : parcours en 3 étapes (sans scroll), modèle matriciel gravité × installation + convergence, restitution orientée action (posture / à faire / à éviter / orientation) + détail repliable, conseils réécrits
+- [x] **v3 — logique par item (fin de la pondération)** : chaque signal porte sa criticité propre + son conseil ; niveau d'ensemble = le signal le plus sérieux coché ; plus de matrice, de temporalité ni de convergence ; détail par item visible avec badges de criticité
 - [x] 20 signaux + 15 contextes (`data/contenu.json`)
 - [x] Habillage aux couleurs Groupama d'Oc + intégration du logo
 - [x] Déploiement GitHub Pages (mise à jour auto à chaque push)
@@ -72,4 +73,5 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - Suivi via **BACKLOG.md**, validation en **direct sur la branche**
 - **Conseils & « à faire » ré-arbitrés** (v2.1) : chaque conseil = lecture + réflexe + piège ; démarches par niveau revues
 - **N4 (Alerte) réservé** à la souffrance installée ou aux drapeaux rouges ; la convergence relationnel/performance plafonne à N3
-- **Recalibrage anti-alarmisme (v2.2)** : un seul drapeau rouge (propos de désespoir) ; « mal-être exprimé » n'est plus une Alerte automatique (→ le manager ouvre le dialogue) ; un signal santé installé seul = N3 (N4 seulement si convergence) ; note rappelant que les relais sont un **appui**, pas un report de responsabilité
+- **Recalibrage anti-alarmisme (v2.2)** : un seul drapeau rouge (propos de désespoir) ; « mal-être exprimé » n'est plus une Alerte automatique ; note rappelant que les relais sont un **appui**, pas un report de responsabilité
+- **Fin de la pondération (v3)** : criticité par item (chaque signal a son niveau), niveau d'ensemble = le plus sérieux coché. Conséquence assumée : pas d'escalade par cumul (4 signaux faibles restent en Vigilance), le contexte n'augmente pas le niveau. Niveau intrinsèque par signal à valider (N3 pour « mal-être exprimé » et « changement de comportement »)

@@ -3,7 +3,7 @@
     "titre": "Matrice de criticité",
     "sous_titre": "Aide au manager en cas d'inquiétude pour un collaborateur",
     "accueil": {
-      "intro": "Vous vous inquiétez pour un collaborateur ? En 3 étapes, cet outil vous aide à situer la criticité de la situation et à savoir quoi faire concrètement.",
+      "intro": "Vous vous inquiétez pour un collaborateur ? Cochez ce que vous observez : l'outil vous donne, pour chaque signal, la conduite à tenir et vers qui orienter.",
       "points": [
         "Un appui à votre décision — pas un diagnostic, pas une évaluation du collaborateur.",
         "Aucune donnée saisie n'est enregistrée ni transmise : tout reste sur votre écran.",
@@ -14,15 +14,10 @@
     "prudence": "Restez sur l'observable, n'abordez jamais le médical, ne posez pas de diagnostic. Cet outil oriente votre action ; il ne remplace ni les RH, ni le référent RPS, ni la médecine du travail, ni la cellule d'écoute.",
     "appui_note": "Ces relais viennent en appui : ils ne remplacent pas votre rôle de manager. L'écoute, le dialogue et l'action sur le travail vous reviennent en premier.",
     "familles": {
-      "sante": { "libelle": "Souffrance / santé", "puce": "🔴", "couleur": "#c53030", "gravite": 3 },
-      "relationnel": { "libelle": "Relationnel / comportement", "puce": "🟠", "couleur": "#c05621", "gravite": 2 },
-      "performance": { "libelle": "Performance / engagement", "puce": "🟡", "couleur": "#b7791f", "gravite": 1 }
+      "sante": { "libelle": "Souffrance / santé", "puce": "🔴", "couleur": "#c53030" },
+      "relationnel": { "libelle": "Relationnel / comportement", "puce": "🟠", "couleur": "#c05621" },
+      "performance": { "libelle": "Performance / engagement", "puce": "🟡", "couleur": "#b7791f" }
     },
-    "temporalite": [
-      { "id": "ponctuel", "libelle": "Ponctuel", "aide": "Observé une fois ou très récemment" },
-      { "id": "repete", "libelle": "Répété", "aide": "Revient depuis quelques semaines" },
-      { "id": "installe", "libelle": "Installé", "aide": "Durable, depuis plusieurs semaines ou mois" }
-    ],
     "a_eviter": [
       "Interroger les raisons médicales ou poser un diagnostic — ce n'est pas votre rôle.",
       "Réagir à chaud, ou aborder le sujet en public.",
@@ -32,42 +27,26 @@
       "Basculer sur le disciplinaire quand un signal de souffrance est présent."
     ]
   },
-  "config": {
-    "matrice": {
-      "performance": { "ponctuel": "N1", "repete": "N1", "installe": "N2" },
-      "relationnel": { "ponctuel": "N1", "repete": "N2", "installe": "N3" },
-      "sante": { "ponctuel": "N2", "repete": "N3", "installe": "N3" }
-    },
-    "convergence": {
-      "signaux_seuil": 4,
-      "signaux_min_avec_contexte": 2,
-      "contexte_seuil": 2,
-      "bump": 1
-    },
-    "n4_reserve_sante": true
-  },
   "niveaux": [
     {
       "id": "N0", "rang": 0, "libelle": "Aucun signal", "couleur": "#6b7280",
       "resume": "Aucun signal n'a été coché. Si une inquiétude diffuse persiste, sélectionnez ce que vous observez.",
-      "posture": "",
-      "demarche": [],
-      "ressources": []
+      "posture": "", "demarche": [], "ressources": []
     },
     {
       "id": "N1", "rang": 1, "libelle": "Vigilance", "couleur": "#2f855a",
-      "resume": "Signal isolé et ponctuel. Rien d'alarmant — vous avez bien fait d'y prêter attention.",
+      "resume": "À surveiller. Rien d'alarmant — restez attentif et disponible.",
       "posture": "Observer et rester disponible, sans dramatiser.",
       "demarche": [
-        "Gardez le signal en tête sans en faire une affaire : isolé et ponctuel, il appelle de l'attention, pas une réaction.",
+        "Gardez ces signaux en tête sans en faire une affaire ; isolés, ils appellent de l'attention, pas une réaction.",
         "Prenez des nouvelles à l'occasion, simplement, au fil d'un échange informel.",
-        "Soyez attentif à un éventuel retour ou cumul du signal : c'est ce qui ferait monter d'un cran."
+        "Soyez attentif à ce qui se répète ou s'aggrave : c'est ce qui changerait la donne."
       ],
       "ressources": ["Au besoin, échangez avec votre RH de proximité."]
     },
     {
       "id": "N2", "rang": 2, "libelle": "Attention", "couleur": "#b7791f",
-      "resume": "Un signal significatif, ou plusieurs qui se répètent. À ne pas laisser traîner.",
+      "resume": "Le moment d'ouvrir le dialogue, sans laisser traîner.",
       "posture": "Ouvrir le dialogue tôt, écouter avant de vouloir résoudre.",
       "demarche": [
         "Provoquez un échange en tête-à-tête, au calme et au bon moment (pas à chaud, pas en public).",
@@ -77,8 +56,8 @@
       "ressources": ["RH de proximité", "Référent RPS si besoin"]
     },
     {
-      "id": "N3", "rang": 3, "libelle": "Situation dégradée", "couleur": "#c05621",
-      "resume": "Des signaux installés ou convergents. La situation se dégrade : il faut agir et ne pas rester seul.",
+      "id": "N3", "rang": 3, "libelle": "Situation sérieuse", "couleur": "#c05621",
+      "resume": "Situation à prendre au sérieux : prenez les choses en main et ne restez pas seul.",
       "posture": "Structurer un suivi, agir sur le travail, et ne pas rester seul.",
       "demarche": [
         "Formalisez l'échange : nommez la situation sans la dramatiser et co-construisez un plan avec des points réguliers.",
@@ -89,7 +68,7 @@
     },
     {
       "id": "N4", "rang": 4, "libelle": "Alerte", "couleur": "#c53030",
-      "resume": "Signal de souffrance, ou tableau lourd et installé. Priorité à la protection de la personne.",
+      "resume": "Signal de danger. Priorité à la protection de la personne.",
       "posture": "Protéger et orienter sans délai — relayer, pas porter seul.",
       "demarche": [
         "Orientez sans attendre vers le soutien adapté (référent RPS, médecine du travail, cellule d'écoute Céla) : proposez, n'imposez pas.",
@@ -100,26 +79,26 @@
     }
   ],
   "signaux": [
-    { "id": "propos_inquietants", "libelle": "Propos inquiétants / désespoir", "famille": "sante", "drapeau_rouge": true, "conseil": "Urgence : ne laissez pas la personne seule. Orientez tout de suite vers la médecine du travail ou la cellule d'écoute ; danger imminent, appelez le 15. Votre rôle n'est pas de gérer seul, mais de protéger et de relayer." },
-    { "id": "mal_etre_exprime", "libelle": "Mal-être exprimé ouvertement", "famille": "sante", "drapeau_rouge": false, "conseil": "C'est d'abord à vous d'ouvrir le dialogue : accueillez la parole sans la juger ni vouloir la régler sur le champ. Orientez vers le soutien (référent RPS, médecine du travail, Céla) si le mal-être est profond ou persistant, et informez les RH." },
-    { "id": "changement_comportement", "libelle": "Changement de comportement", "famille": "sante", "drapeau_rouge": false, "conseil": "Fiez-vous au contraste avec son fonctionnement habituel. Dites ce que vous observez, factuellement, et ouvrez la porte sans forcer : « je te sens différent ces derniers temps »." },
-    { "id": "isolement", "libelle": "Isolement / repli", "famille": "sante", "drapeau_rouge": false, "conseil": "Recréez du lien plutôt que de pointer le retrait : sollicitations simples, place dans le collectif. Cherchez si c'est subi (mise à l'écart) ou choisi (protection)." },
-    { "id": "irritabilite", "libelle": "Irritabilité", "famille": "sante", "drapeau_rouge": false, "conseil": "Ne le prenez pas personnellement et n'y répondez pas à chaud. À froid, explorez ce qui pèse (charge, tensions, hors-travail) sans le présumer." },
-    { "id": "pleurs_emotivite", "libelle": "Pleurs / émotivité inhabituelle", "famille": "sante", "drapeau_rouge": false, "conseil": "Laissez de la place à l'émotion sans la commenter ni la fuir. Un mot simple, un temps au calme : c'est souvent le signe d'un trop-plein." },
-    { "id": "plaintes_somatiques", "libelle": "Plaintes somatiques / fatigue visible", "famille": "sante", "drapeau_rouge": false, "conseil": "Prenez la fatigue au sérieux comme signal, sans jamais entrer dans le médical. Voyez ce qui peut être allégé et orientez vers la médecine du travail." },
-    { "id": "esprit_negatif", "libelle": "Esprit négatif", "famille": "sante", "drapeau_rouge": false, "conseil": "Avant de vouloir « remotiver », écoutez ce qui nourrit ce regard (sens, reconnaissance, tensions). La négativité est souvent un symptôme, pas un trait de caractère." },
-    { "id": "conflits_interpersonnels", "libelle": "Conflits interpersonnels", "famille": "relationnel", "drapeau_rouge": false, "conseil": "Intervenez tôt : un conflit qui s'installe contamine l'équipe. Recevez les versions séparément, restez sur les faits et les besoins, puis posez un cadre commun." },
-    { "id": "comportements_negatifs", "libelle": "Comportements négatifs", "famille": "relationnel", "drapeau_rouge": false, "conseil": "Tenez le cadre sur les comportements (ce qui est acceptable) sans condamner la personne. Cherchez la cause : frustration, sentiment d'injustice, fatigue." },
-    { "id": "absenteisme", "libelle": "Absentéisme", "famille": "performance", "drapeau_rouge": false, "conseil": "Ne questionnez jamais le motif médical. Soignez le retour (point de reprise, mise à jour) ; si les absences se répètent, regardez le travail et associez les RH." },
-    { "id": "baisse_performances", "libelle": "Baisse des performances", "famille": "performance", "drapeau_rouge": false, "conseil": "Traitez-la comme un symptôme à comprendre, pas comme une faute à sanctionner. Cherchez la cause (charge, sens, santé, compétence) avant d'ajuster les attentes." },
-    { "id": "non_respect_delais", "libelle": "Non-respect des délais", "famille": "performance", "drapeau_rouge": false, "conseil": "Cherchez le « pourquoi » (surcharge, priorités floues, décrochage) avant de recadrer. Clarifiez ensemble priorités et points de passage." },
-    { "id": "erreurs_pro", "libelle": "Erreurs professionnelles", "famille": "performance", "drapeau_rouge": false, "conseil": "Reprenez les faits avec pédagogie, sans dramatiser ni humilier. Vérifiez charge et concentration : des erreurs qui se multiplient sont rarement un simple manque de soin." },
-    { "id": "inattention", "libelle": "Inattention", "famille": "performance", "drapeau_rouge": false, "conseil": "Distinguez l'écart ponctuel du décrochage installé. Souvent liée à la fatigue ou à la surcharge mentale : reprioritisez et allégez le « bruit »." },
-    { "id": "manque_autonomie", "libelle": "Manque d'autonomie", "famille": "performance", "drapeau_rouge": false, "conseil": "Identifiez le frein réel : compétence, confiance, ou un cadre trop serré de votre part. Donnez de la marge par étapes, avec un droit à l'erreur." },
-    { "id": "desengagement", "libelle": "Désengagement", "famille": "performance", "drapeau_rouge": false, "conseil": "Ne forcez pas l'implication : rouvrez le sens, la reconnaissance et l'écoute avant de parler résultats. Le désengagement est une conséquence, pas une cause." },
-    { "id": "baisse_motivation", "libelle": "Baisse de la motivation", "famille": "performance", "drapeau_rouge": false, "conseil": "Reconnectez à ce qui fait sens pour la personne (intérêts, perspectives) plutôt que de remobiliser par la pression. Une évolution des missions est parfois la clé." },
-    { "id": "feedback_negatif", "libelle": "Feedback négatif du collaborateur", "famille": "performance", "drapeau_rouge": false, "conseil": "Accueillez la critique sans vous justifier aussitôt ; reformulez pour montrer que vous avez entendu. Un feedback exprimé est une chance de régler avant que ça s'enkyste." },
-    { "id": "surinvestissement", "libelle": "Surinvestissement / hyperprésentéisme", "famille": "performance", "drapeau_rouge": false, "conseil": "Ne confondez pas engagement et alerte : l'incapacité à décrocher use. Posez des limites visibles et valorisez l'efficacité plutôt que le temps passé." }
+    { "id": "propos_inquietants", "libelle": "Propos inquiétants / désespoir", "famille": "sante", "niveau": "N4", "conseil": "Urgence : ne laissez pas la personne seule. Orientez tout de suite vers la médecine du travail ou la cellule d'écoute ; danger imminent, appelez le 15. Votre rôle n'est pas de gérer seul, mais de protéger et de relayer." },
+    { "id": "mal_etre_exprime", "libelle": "Mal-être exprimé ouvertement", "famille": "sante", "niveau": "N3", "conseil": "C'est d'abord à vous d'ouvrir le dialogue : accueillez la parole sans la juger ni vouloir la régler sur le champ. Orientez vers le soutien (référent RPS, médecine du travail, Céla) si le mal-être est profond ou persistant, et informez les RH." },
+    { "id": "changement_comportement", "libelle": "Changement de comportement", "famille": "sante", "niveau": "N3", "conseil": "Fiez-vous au contraste avec son fonctionnement habituel. Dites ce que vous observez, factuellement, et ouvrez la porte sans forcer : « je te sens différent ces derniers temps »." },
+    { "id": "isolement", "libelle": "Isolement / repli", "famille": "sante", "niveau": "N2", "conseil": "Recréez du lien plutôt que de pointer le retrait : sollicitations simples, place dans le collectif. Cherchez si c'est subi (mise à l'écart) ou choisi (protection)." },
+    { "id": "irritabilite", "libelle": "Irritabilité", "famille": "sante", "niveau": "N2", "conseil": "Ne le prenez pas personnellement et n'y répondez pas à chaud. À froid, explorez ce qui pèse (charge, tensions, hors-travail) sans le présumer." },
+    { "id": "pleurs_emotivite", "libelle": "Pleurs / émotivité inhabituelle", "famille": "sante", "niveau": "N2", "conseil": "Laissez de la place à l'émotion sans la commenter ni la fuir. Un mot simple, un temps au calme : c'est souvent le signe d'un trop-plein." },
+    { "id": "plaintes_somatiques", "libelle": "Plaintes somatiques / fatigue visible", "famille": "sante", "niveau": "N2", "conseil": "Prenez la fatigue au sérieux comme signal, sans jamais entrer dans le médical. Voyez ce qui peut être allégé et orientez vers la médecine du travail." },
+    { "id": "esprit_negatif", "libelle": "Esprit négatif", "famille": "sante", "niveau": "N2", "conseil": "Avant de vouloir « remotiver », écoutez ce qui nourrit ce regard (sens, reconnaissance, tensions). La négativité est souvent un symptôme, pas un trait de caractère." },
+    { "id": "conflits_interpersonnels", "libelle": "Conflits interpersonnels", "famille": "relationnel", "niveau": "N2", "conseil": "Intervenez tôt : un conflit qui s'installe contamine l'équipe. Recevez les versions séparément, restez sur les faits et les besoins, puis posez un cadre commun." },
+    { "id": "comportements_negatifs", "libelle": "Comportements négatifs", "famille": "relationnel", "niveau": "N2", "conseil": "Tenez le cadre sur les comportements (ce qui est acceptable) sans condamner la personne. Cherchez la cause : frustration, sentiment d'injustice, fatigue." },
+    { "id": "surinvestissement", "libelle": "Surinvestissement / hyperprésentéisme", "famille": "performance", "niveau": "N2", "conseil": "Ne confondez pas engagement et alerte : l'incapacité à décrocher use. Posez des limites visibles et valorisez l'efficacité plutôt que le temps passé." },
+    { "id": "desengagement", "libelle": "Désengagement", "famille": "performance", "niveau": "N2", "conseil": "Ne forcez pas l'implication : rouvrez le sens, la reconnaissance et l'écoute avant de parler résultats. Le désengagement est une conséquence, pas une cause." },
+    { "id": "absenteisme", "libelle": "Absentéisme", "famille": "performance", "niveau": "N1", "conseil": "Ne questionnez jamais le motif médical. Soignez le retour (point de reprise, mise à jour) ; si les absences se répètent, regardez le travail et associez les RH." },
+    { "id": "baisse_performances", "libelle": "Baisse des performances", "famille": "performance", "niveau": "N1", "conseil": "Traitez-la comme un symptôme à comprendre, pas comme une faute à sanctionner. Cherchez la cause (charge, sens, santé, compétence) avant d'ajuster les attentes." },
+    { "id": "non_respect_delais", "libelle": "Non-respect des délais", "famille": "performance", "niveau": "N1", "conseil": "Cherchez le « pourquoi » (surcharge, priorités floues, décrochage) avant de recadrer. Clarifiez ensemble priorités et points de passage." },
+    { "id": "erreurs_pro", "libelle": "Erreurs professionnelles", "famille": "performance", "niveau": "N1", "conseil": "Reprenez les faits avec pédagogie, sans dramatiser ni humilier. Vérifiez charge et concentration : des erreurs qui se multiplient sont rarement un simple manque de soin." },
+    { "id": "inattention", "libelle": "Inattention", "famille": "performance", "niveau": "N1", "conseil": "Distinguez l'écart ponctuel du décrochage installé. Souvent liée à la fatigue ou à la surcharge mentale : reprioritisez et allégez le « bruit »." },
+    { "id": "manque_autonomie", "libelle": "Manque d'autonomie", "famille": "performance", "niveau": "N1", "conseil": "Identifiez le frein réel : compétence, confiance, ou un cadre trop serré de votre part. Donnez de la marge par étapes, avec un droit à l'erreur." },
+    { "id": "baisse_motivation", "libelle": "Baisse de la motivation", "famille": "performance", "niveau": "N1", "conseil": "Reconnectez à ce qui fait sens pour la personne (intérêts, perspectives) plutôt que de remobiliser par la pression. Une évolution des missions est parfois la clé." },
+    { "id": "feedback_negatif", "libelle": "Feedback négatif du collaborateur", "famille": "performance", "niveau": "N1", "conseil": "Accueillez la critique sans vous justifier aussitôt ; reformulez pour montrer que vous avez entendu. Un feedback exprimé est une chance de régler avant que ça s'enkyste." }
   ],
   "contexte": [
     { "id": "forte_charge", "libelle": "Forte charge de travail", "famille_gollac": "Intensité et temps de travail", "conseil": "Agissez concrètement : repriorisez, redistribuez, allégez temporairement. Une charge forte n'use vraiment que si l'autonomie et le soutien manquent — donnez les deux." },

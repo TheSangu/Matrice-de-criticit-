@@ -54,19 +54,13 @@
       <div id="grille-signaux" class="grille-familles"></div>
     </section>
 
-    <!-- Étape 2 : Contexte + temporalité -->
+    <!-- Étape 2 : Contexte -->
     <section class="step" id="step-contexte" hidden aria-labelledby="contexte-h">
       <div class="step-head">
-        <h2 id="contexte-h">Depuis quand, et dans quel contexte&nbsp;?</h2>
+        <h2 id="contexte-h">Un élément du contexte de travail est-il en jeu&nbsp;?</h2>
+        <p class="step-sub">Facultatif. Le contexte n'augmente pas le niveau : il éclaire les causes et donne des leviers d'action.</p>
       </div>
-      <div class="bloc-temporalite">
-        <p class="mini-titre">Depuis combien de temps observez-vous ces signaux&nbsp;?</p>
-        <div id="choix-temporalite" class="segmente" role="radiogroup" aria-label="Ancienneté des signaux"></div>
-      </div>
-      <div class="bloc-contexte">
-        <p class="mini-titre">Un élément du contexte de travail est-il en jeu&nbsp;? <span class="opt">(facultatif)</span></p>
-        <div id="grille-contexte" class="chips"></div>
-      </div>
+      <div id="grille-contexte" class="chips"></div>
     </section>
 
     <!-- Étape 3 : Résultat -->
@@ -99,10 +93,10 @@
         </div>
       </div>
 
-      <details id="detail" class="detail">
-        <summary>Voir le détail par élément coché</summary>
+      <div class="carte bloc-detail">
+        <h3>Ce que vous avez coché, point par point</h3>
         <div id="detail-contenu" class="detail-contenu"></div>
-      </details>
+      </div>
     </section>
 
     <!-- Navigation -->
