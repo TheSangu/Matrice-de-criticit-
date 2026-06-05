@@ -121,6 +121,7 @@ body {
 .liste-puces li, .ressources li { margin-bottom: 0.35rem; }
 .ressources { list-style: none; padding: 0; }
 .ressources li { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.35rem; background: #fafbfc; font-size: 0.92rem; }
+.appui-note { margin: 0.5rem 0 0; font-size: 0.83rem; color: var(--muted); font-style: italic; }
 
 /* Détail repliable */
 .detail { margin-top: 1rem; border: 1px solid var(--border); border-radius: 12px; padding: 0.3rem 0.9rem; background: #fff; }

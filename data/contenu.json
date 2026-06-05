@@ -12,6 +12,7 @@
       "cta": "Commencer"
     },
     "prudence": "Restez sur l'observable, n'abordez jamais le médical, ne posez pas de diagnostic. Cet outil oriente votre action ; il ne remplace ni les RH, ni le référent RPS, ni la médecine du travail, ni la cellule d'écoute.",
+    "appui_note": "Ces relais viennent en appui : ils ne remplacent pas votre rôle de manager. L'écoute, le dialogue et l'action sur le travail vous reviennent en premier.",
     "familles": {
       "sante": { "libelle": "Souffrance / santé", "puce": "🔴", "couleur": "#c53030", "gravite": 3 },
       "relationnel": { "libelle": "Relationnel / comportement", "puce": "🟠", "couleur": "#c05621", "gravite": 2 },
@@ -35,7 +36,7 @@
     "matrice": {
       "performance": { "ponctuel": "N1", "repete": "N1", "installe": "N2" },
       "relationnel": { "ponctuel": "N1", "repete": "N2", "installe": "N3" },
-      "sante": { "ponctuel": "N2", "repete": "N3", "installe": "N4" }
+      "sante": { "ponctuel": "N2", "repete": "N3", "installe": "N3" }
     },
     "convergence": {
       "signaux_seuil": 4,
@@ -100,7 +101,7 @@
   ],
   "signaux": [
     { "id": "propos_inquietants", "libelle": "Propos inquiétants / désespoir", "famille": "sante", "drapeau_rouge": true, "conseil": "Urgence : ne laissez pas la personne seule. Orientez tout de suite vers la médecine du travail ou la cellule d'écoute ; danger imminent, appelez le 15. Votre rôle n'est pas de gérer seul, mais de protéger et de relayer." },
-    { "id": "mal_etre_exprime", "libelle": "Mal-être exprimé ouvertement", "famille": "sante", "drapeau_rouge": true, "conseil": "La parole est un appel : accueillez-la sans la juger ni chercher à la régler sur le champ. Orientez vers le soutien (référent RPS, médecine du travail, Céla) et informez les RH." },
+    { "id": "mal_etre_exprime", "libelle": "Mal-être exprimé ouvertement", "famille": "sante", "drapeau_rouge": false, "conseil": "C'est d'abord à vous d'ouvrir le dialogue : accueillez la parole sans la juger ni vouloir la régler sur le champ. Orientez vers le soutien (référent RPS, médecine du travail, Céla) si le mal-être est profond ou persistant, et informez les RH." },
     { "id": "changement_comportement", "libelle": "Changement de comportement", "famille": "sante", "drapeau_rouge": false, "conseil": "Fiez-vous au contraste avec son fonctionnement habituel. Dites ce que vous observez, factuellement, et ouvrez la porte sans forcer : « je te sens différent ces derniers temps »." },
     { "id": "isolement", "libelle": "Isolement / repli", "famille": "sante", "drapeau_rouge": false, "conseil": "Recréez du lien plutôt que de pointer le retrait : sollicitations simples, place dans le collectif. Cherchez si c'est subi (mise à l'écart) ou choisi (protection)." },
     { "id": "irritabilite", "libelle": "Irritabilité", "famille": "sante", "drapeau_rouge": false, "conseil": "Ne le prenez pas personnellement et n'y répondez pas à chaud. À froid, explorez ce qui pèse (charge, tensions, hors-travail) sans le présumer." },

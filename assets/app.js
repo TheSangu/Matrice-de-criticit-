@@ -240,6 +240,7 @@
       remplirListe($("#demarche"), n.demarche);
       remplirListe($("#a-eviter"), data.meta.a_eviter);
       remplirListe($("#ressources"), n.ressources);
+      $("#appui-note").textContent = data.meta.appui_note || "";
       rendreDetail(res);
     }
   }

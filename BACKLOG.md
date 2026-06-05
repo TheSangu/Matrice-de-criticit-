@@ -72,3 +72,4 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - Suivi via **BACKLOG.md**, validation en **direct sur la branche**
 - **Conseils & « à faire » ré-arbitrés** (v2.1) : chaque conseil = lecture + réflexe + piège ; démarches par niveau revues
 - **N4 (Alerte) réservé** à la souffrance installée ou aux drapeaux rouges ; la convergence relationnel/performance plafonne à N3
+- **Recalibrage anti-alarmisme (v2.2)** : un seul drapeau rouge (propos de désespoir) ; « mal-être exprimé » n'est plus une Alerte automatique (→ le manager ouvre le dialogue) ; un signal santé installé seul = N3 (N4 seulement si convergence) ; note rappelant que les relais sont un **appui**, pas un report de responsabilité
