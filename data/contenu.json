@@ -25,7 +25,63 @@
       "Minimiser (« ça va passer ») comme dramatiser.",
       "Rester seul avec la situation — ou, à l'inverse, vous substituer aux professionnels.",
       "Basculer sur le disciplinaire quand un signal de souffrance est présent."
-    ]
+    ],
+    "ressources": {
+      "rh_proximite": {
+        "libelle": "RH de proximité",
+        "role": "Votre interlocuteur RH habituel. À associer dès qu'une situation se formalise, se répète ou demande un cadre (suivi, organisation, droits).",
+        "contact": "",
+        "lien": ""
+      },
+      "referent_rps": {
+        "libelle": "Référent RPS",
+        "role": "Spécialiste des risques psychosociaux : conseil et appui sur les situations de souffrance ou de tension liées au travail.",
+        "contact": "",
+        "lien": ""
+      },
+      "medecine_travail": {
+        "libelle": "Médecine du travail",
+        "role": "Santé au travail : à solliciter face à la fatigue, aux plaintes somatiques ou à un mal-être. Seule habilitée sur le volet médical.",
+        "contact": "",
+        "lien": ""
+      },
+      "cellule_cela": {
+        "libelle": "Cellule d'écoute Céla",
+        "role": "Soutien psychologique confidentiel, accessible directement par le collaborateur, 24h/24.",
+        "contact": "",
+        "lien": ""
+      },
+      "proche_aidant": {
+        "libelle": "Dispositif proche-aidant",
+        "role": "Accompagnement quand la vie personnelle (aider un proche) pèse sur le travail : aménagements, droits, écoute.",
+        "contact": "",
+        "lien": ""
+      },
+      "process_incivilite": {
+        "libelle": "Process incivilité",
+        "role": "Procédure de déclaration et de traitement des incivilités, clients comme internes : tracer, protéger, accompagner.",
+        "contact": "",
+        "lien": ""
+      },
+      "cit": {
+        "libelle": "CIT",
+        "role": "Dispositif à préciser avec Groupama d'Oc (rôle, périmètre et situations concernées).",
+        "contact": "",
+        "lien": ""
+      },
+      "eae": {
+        "libelle": "EAE / bilan RH",
+        "role": "Temps d'échange pour ouvrir des perspectives (mobilité, évolution, formation). Intitulé exact à confirmer.",
+        "contact": "",
+        "lien": ""
+      },
+      "secours": {
+        "libelle": "Secours — danger immédiat",
+        "role": "Propos suicidaires, détresse aiguë : alertez sans attendre et restez auprès de la personne.",
+        "contact": "15 (SAMU) · 112 (urgences)",
+        "lien": ""
+      }
+    }
   },
   "niveaux": [
     {
@@ -42,7 +98,7 @@
         "Prenez des nouvelles à l'occasion, simplement, au fil d'un échange informel.",
         "Soyez attentif à ce qui se répète ou s'aggrave : c'est ce qui changerait la donne."
       ],
-      "ressources": ["Au besoin, échangez avec votre RH de proximité."]
+      "ressources": ["rh_proximite"]
     },
     {
       "id": "N2", "rang": 2, "libelle": "Attention", "couleur": "#b7791f",
@@ -53,7 +109,7 @@
         "Ouvrez sur du factuel et de l'ouvert : « j'ai remarqué…, comment ça va de ton côté ? », puis écoutez sans meubler.",
         "Cherchez ensemble ce qui, dans le travail, peut être ajusté, et reconvenez d'un point de suivi rapproché."
       ],
-      "ressources": ["RH de proximité", "Référent RPS si besoin"]
+      "ressources": ["rh_proximite", "referent_rps"]
     },
     {
       "id": "N3", "rang": 3, "libelle": "Situation sérieuse", "couleur": "#c05621",
@@ -64,7 +120,7 @@
         "Ne portez pas seul : associez les RH, et le référent RPS selon le cas.",
         "Agissez sur ce qui pèse dans votre périmètre : alléger, réorganiser, clarifier."
       ],
-      "ressources": ["RH", "Référent RPS", "Médecine du travail"]
+      "ressources": ["rh_proximite", "referent_rps", "medecine_travail"]
     },
     {
       "id": "N4", "rang": 4, "libelle": "Alerte", "couleur": "#c53030",
@@ -75,7 +131,7 @@
         "Assurez une présence bienveillante : gardez le lien, ne laissez pas la personne isolée.",
         "Informez les RH. Danger immédiat (propos suicidaires, détresse aiguë) : appelez le 15 et restez auprès d'elle."
       ],
-      "ressources": ["Médecine du travail", "Cellule d'écoute Céla", "Référent RPS", "RH", "Secours (15 / 112) en cas de danger immédiat"]
+      "ressources": ["secours", "cellule_cela", "medecine_travail", "referent_rps", "rh_proximite"]
     }
   ],
   "signaux": [
@@ -104,8 +160,8 @@
     { "id": "forte_charge", "libelle": "Forte charge de travail", "famille_gollac": "Intensité et temps de travail", "conseil": "Agissez concrètement : repriorisez, redistribuez, allégez temporairement. Une charge forte n'use vraiment que si l'autonomie et le soutien manquent — donnez les deux." },
     { "id": "objectifs_performance", "libelle": "Objectifs de performance (flous ou élevés)", "famille_gollac": "Intensité et temps de travail", "conseil": "Rendez l'attendu clair et atteignable. Des objectifs flous ou hors d'atteinte génèrent plus de stress que de performance." },
     { "id": "vie_pro_perso", "libelle": "Vie pro qui empiète sur la vie perso", "famille_gollac": "Intensité et temps de travail", "conseil": "Ouvrez des marges sur l'organisation (priorisation, flexibilité, télétravail) plutôt que d'attendre que la personne « tienne »." },
-    { "id": "incivilite_client", "libelle": "Incivilité client récente", "famille_gollac": "Exigences émotionnelles", "conseil": "Soutenez et légitimez l'impact (« ce n'est pas normal d'avoir à subir ça »). Débriefez et activez le process de déclaration d'incivilité." },
-    { "id": "incivilite_interne", "libelle": "Incivilité interne (d'un collègue)", "famille_gollac": "Exigences émotionnelles", "conseil": "Ne laissez rien passer entre collègues : posez le cadre et protégez la personne exposée (process d'alerte)." },
+    { "id": "incivilite_client", "libelle": "Incivilité client récente", "famille_gollac": "Exigences émotionnelles", "conseil": "Soutenez et légitimez l'impact (« ce n'est pas normal d'avoir à subir ça »). Débriefez et activez le process de déclaration d'incivilité.", "ressource": "process_incivilite" },
+    { "id": "incivilite_interne", "libelle": "Incivilité interne (d'un collègue)", "famille_gollac": "Exigences émotionnelles", "conseil": "Ne laissez rien passer entre collègues : posez le cadre et protégez la personne exposée (process d'alerte).", "ressource": "process_incivilite" },
     { "id": "evolution_poste", "libelle": "Évolution dans le poste", "famille_gollac": "Manque d'autonomie / marges de manœuvre", "conseil": "Accompagnez la prise de poste : points rapprochés, objectifs ajustés, droit à la montée en compétence." },
     { "id": "evolution_taches", "libelle": "Évolution dans les tâches", "famille_gollac": "Manque d'autonomie / marges de manœuvre", "conseil": "Vérifiez que la complexité est proportionnée et explicitée ; prévoyez un filet de soutien le temps de l'adaptation." },
     { "id": "faible_valorisation", "libelle": "Faible valorisation / reconnaissance", "famille_gollac": "Rapports sociaux dégradés", "conseil": "Rendez la reconnaissance concrète et régulière, pas seulement à l'entretien annuel. Le manque de reconnaissance est un facteur de risque à part entière." },
@@ -113,8 +169,8 @@
     { "id": "manque_soutien", "libelle": "Manque de soutien hiérarchique", "famille_gollac": "Rapports sociaux dégradés", "conseil": "Soyez réellement disponible et explicite sur l'appui que vous apportez : un soutien perçu change tout." },
     { "id": "perte_sens", "libelle": "Perte de sens / qualité empêchée", "famille_gollac": "Conflits de valeurs", "conseil": "Reconnectez le travail à ses finalités et levez ce qui empêche de « bien faire » — la qualité empêchée use en profondeur." },
     { "id": "reorganisation", "libelle": "Réorganisation récente", "famille_gollac": "Insécurité de la situation de travail", "conseil": "Donnez un espace pour exprimer ce qui inquiète et expliquez le cap : l'incertitude non dite amplifie le stress." },
-    { "id": "manque_perspective", "libelle": "Manque de perspective d'évolution", "famille_gollac": "Insécurité de la situation de travail", "conseil": "Soyez transparent sur le réalisable et ouvrez des pistes concrètes (mobilité, projets, formation ; EAE, bilan RH)." },
+    { "id": "manque_perspective", "libelle": "Manque de perspective d'évolution", "famille_gollac": "Insécurité de la situation de travail", "conseil": "Soyez transparent sur le réalisable et ouvrez des pistes concrètes (mobilité, projets, formation ; EAE, bilan RH).", "ressource": "eae" },
     { "id": "reintegration_absence", "libelle": "Réintégration après une absence", "famille_gollac": "Insécurité de la situation de travail", "conseil": "Préparez un retour structuré et progressif : un point d'accueil et l'appui de l'équipe évitent la rechute." },
-    { "id": "vie_perso_pro", "libelle": "Vie perso qui empiète sur la vie pro", "famille_gollac": "Transverse", "conseil": "Reconnaissez la situation sans intrusion, rappelez les ressources (ex. dispositif proche-aidant) et adaptez temporairement si possible." }
+    { "id": "vie_perso_pro", "libelle": "Vie perso qui empiète sur la vie pro", "famille_gollac": "Transverse", "conseil": "Reconnaissez la situation sans intrusion, rappelez les ressources (ex. dispositif proche-aidant) et adaptez temporairement si possible.", "ressource": "proche_aidant" }
   ]
 }

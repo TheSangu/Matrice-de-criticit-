@@ -28,10 +28,12 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 ## C — Ressources internes Groupama d'Oc
 *Brancher les dispositifs réels — `data/contenu.json`*
 
-- [ ] **Lister** les dispositifs : cellule Céla, référent RPS, médecine du travail, dispositif proche-aidant, process incivilité, CIT, EAE, RH de proximité…
-- [ ] Définir les **ressources par niveau** (N1→N4)
-- [ ] Associer des **ressources par situation** (ex. incivilité client → process de déclaration ; proche-aidant → dispositif dédié)
-- [ ] Ajouter **contacts / liens** (qui, comment, dans quel ordre)
+- [x] **Catalogue de ressources** créé (`meta.ressources`) : chaque dispositif a un rôle + des champs `contact`/`lien`, rendu en cartes dans « Vers qui orienter »
+- [x] Dispositifs **listés** : RH de proximité, référent RPS, médecine du travail, cellule Céla, proche-aidant, process incivilité, EAE/bilan RH, secours, CIT
+- [x] **Ressources par niveau** (N1→N4) branchées sur le catalogue (ordre = ordre de mobilisation)
+- [~] **Ressources par situation** : incivilité (client/interne) → process incivilité ; vie perso → proche-aidant ; manque de perspective → EAE. *À compléter selon les autres situations.*
+- [ ] **Contacts / liens réels** à renseigner (champs `contact`/`lien` aujourd'hui vides, affichés seulement une fois remplis)
+- [ ] Préciser **CIT** (rôle, périmètre, situations) et **EAE** (intitulé exact), puis brancher CIT (non rattaché pour l'instant)
 
 ## D — UX & textes
 *Parcours, écran d'accueil, restitution — `index.html`, `assets/app.js`*

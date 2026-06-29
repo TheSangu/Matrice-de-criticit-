@@ -168,7 +168,7 @@
       $("#posture").textContent = n.posture;
       remplirListe($("#demarche"), n.demarche);
       remplirListe($("#a-eviter"), data.meta.a_eviter);
-      remplirListe($("#ressources"), n.ressources);
+      rendreRessources($("#ressources"), n.ressources);
       $("#appui-note").textContent = data.meta.appui_note || "";
       rendreDetail(res);
     }
@@ -177,6 +177,39 @@
   function remplirListe(node, items) {
     node.innerHTML = "";
     (items || []).forEach(function (t) { var li = el("li"); li.textContent = t; node.appendChild(li); });
+  }
+
+  /* Catalogue des dispositifs internes (meta.ressources). */
+  function ressource(id) { return (data.meta.ressources || {})[id] || null; }
+
+  /* Rend la liste « Vers qui orienter » en cartes (libellé + rôle + contact/lien). */
+  function rendreRessources(node, ids) {
+    node.innerHTML = "";
+    (ids || []).forEach(function (id) {
+      var r = ressource(id);
+      var li = el("li", "ressource-item");
+      if (!r) { li.textContent = id; node.appendChild(li); return; } // tolérance : ancien libellé brut
+      var nom = el("span", "ressource-nom"); nom.textContent = r.libelle;
+      li.appendChild(nom);
+      if (r.role) { var role = el("span", "ressource-role"); role.textContent = r.role; li.appendChild(role); }
+      var coord = ligneContact(r);
+      if (coord) li.appendChild(coord);
+      node.appendChild(li);
+    });
+  }
+
+  /* Ligne contact + lien, affichée seulement si renseignée. */
+  function ligneContact(r) {
+    if (!r.contact && !r.lien) return null;
+    var c = el("span", "ressource-contact");
+    if (r.contact) c.appendChild(document.createTextNode(r.contact));
+    if (r.lien) {
+      if (r.contact) c.appendChild(document.createTextNode(" · "));
+      var a = el("a"); a.href = r.lien; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = "en savoir plus";
+      c.appendChild(a);
+    }
+    return c;
   }
 
   function rendreDetail(res) {
@@ -209,6 +242,14 @@
         titre.textContent = c.libelle + " — " + c.famille_gollac;
         var p = el("p"); p.textContent = c.conseil;
         item.appendChild(titre); item.appendChild(p);
+        var r = c.ressource && ressource(c.ressource);
+        if (r) {
+          var lien = el("p", "detail-ressource");
+          lien.appendChild(document.createTextNode("→ Ressource : "));
+          var nom = el("strong"); nom.textContent = r.libelle; lien.appendChild(nom);
+          if (r.contact) lien.appendChild(document.createTextNode(" — " + r.contact));
+          item.appendChild(lien);
+        }
         box.appendChild(item);
       });
     }
