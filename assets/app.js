@@ -42,10 +42,34 @@
       leg.appendChild(s);
     });
 
+    rendreAffichages(m.affichages);
     rendreSignaux();
     rendreContexte();
     brancher();
     aller(0);
+  }
+
+  /* ---------- Accueil : affichages à diffuser (rappels de communication) ---------- */
+  function rendreAffichages(aff) {
+    var box = $("#affichages");
+    if (!aff || !aff.themes || !aff.themes.length) { box.hidden = true; return; }
+    box.hidden = false;
+    $("#affichages-intro").textContent = aff.intro || "";
+    var cont = $("#affichages-themes");
+    cont.innerHTML = "";
+    aff.themes.forEach(function (t) {
+      if (!t.items || !t.items.length) return;
+      var h = el("p", "affichages-theme"); h.textContent = t.titre; cont.appendChild(h);
+      var ul = el("ul", "affichages-liste");
+      t.items.forEach(function (it) {
+        var li = el("li");
+        var a = el("a"); a.href = it.fichier; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = it.titre;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+      cont.appendChild(ul);
+    });
   }
 
   /* ---------- Étape signaux : colonnes par famille ---------- */

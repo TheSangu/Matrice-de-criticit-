@@ -13,6 +13,32 @@
     },
     "prudence": "Restez sur l'observable, n'abordez jamais le médical, ne posez pas de diagnostic. Cet outil oriente votre action ; il ne remplace ni les RH, ni le référent RPS, ni la médecine du travail, ni la cellule d'écoute.",
     "appui_note": "Ces relais viennent en appui : ils ne remplacent pas votre rôle de manager. L'écoute, le dialogue et l'action sur le travail vous reviennent en premier.",
+    "affichages": {
+      "intro": "Affichages officiels à diffuser ou à rappeler à vos équipes. Cliquez pour ouvrir ou télécharger.",
+      "themes": [
+        {
+          "titre": "Cellule d'écoute Céla",
+          "items": [
+            { "titre": "Plaquette Céla — service d'écoute et de soutien", "fichier": "assets/affichages/cela-plaquette.pdf" },
+            { "titre": "Affiche Céla — format d'affichage", "fichier": "assets/affichages/cela-affiche.pdf" }
+          ]
+        },
+        {
+          "titre": "Incivilités",
+          "items": [
+            { "titre": "Incivilités client en agence — conduite à tenir (MAJ 2025)", "fichier": "assets/affichages/incivilites-agence.pdf" },
+            { "titre": "Incivilités au téléphone — conduite à tenir (MAJ 2025)", "fichier": "assets/affichages/incivilites-telephone.pdf" },
+            { "titre": "Affiche incivilités — à destination des sociétaires", "fichier": "assets/affichages/incivilites-societaires.pdf" }
+          ]
+        },
+        {
+          "titre": "Affichage réglementaire",
+          "items": [
+            { "titre": "Affichage AS-HS 2026", "fichier": "assets/affichages/affichage-as-hs-2026.pdf" }
+          ]
+        }
+      ]
+    },
     "familles": {
       "sante": { "libelle": "Souffrance / santé", "puce": "🔴", "couleur": "#c53030" },
       "relationnel": { "libelle": "Relationnel / comportement", "puce": "🟠", "couleur": "#c05621" },
