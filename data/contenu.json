@@ -69,15 +69,15 @@
         "contact": "alerte-oc@groupama-oc.fr",
         "lien": ""
       },
-      "cit": {
-        "libelle": "CIT",
-        "role": "Dispositif à préciser avec Groupama d'Oc (rôle, périmètre et situations concernées).",
-        "contact": "",
+      "referent_harcelement": {
+        "libelle": "Référent harcèlement sexuel / agissements sexistes",
+        "role": "Oriente, informe et accompagne face au harcèlement sexuel et aux agissements sexistes ; peut enclencher les procédures destinées à faire cesser les agissements.",
+        "contact": "Margot MORU (RH) : 05 62 47 35 28 · Sylvie EYCHENNE (CSE) : sylvie.eychenne@groupama-oc.fr",
         "lien": ""
       },
       "eae": {
-        "libelle": "EAE / bilan RH",
-        "role": "Temps d'échange pour ouvrir des perspectives (mobilité, évolution, formation). Intitulé exact à confirmer.",
+        "libelle": "Entretien Annuel d'Évaluation (EAE)",
+        "role": "Temps d'échange annuel pour faire le point et ouvrir des perspectives (mobilité, évolution, formation). Un bilan RH peut le compléter.",
         "contact": "",
         "lien": ""
       },
@@ -167,7 +167,7 @@
     { "id": "objectifs_performance", "libelle": "Objectifs de performance (flous ou élevés)", "famille_gollac": "Intensité et temps de travail", "conseil": "Rendez l'attendu clair et atteignable. Des objectifs flous ou hors d'atteinte génèrent plus de stress que de performance." },
     { "id": "vie_pro_perso", "libelle": "Vie pro qui empiète sur la vie perso", "famille_gollac": "Intensité et temps de travail", "conseil": "Ouvrez des marges sur l'organisation (priorisation, flexibilité, télétravail) plutôt que d'attendre que la personne « tienne »." },
     { "id": "incivilite_client", "libelle": "Incivilité client récente", "famille_gollac": "Exigences émotionnelles", "conseil": "Soutenez et légitimez l'impact (« ce n'est pas normal d'avoir à subir ça »). Débriefez et activez le process de déclaration d'incivilité.", "ressource": "process_incivilite" },
-    { "id": "incivilite_interne", "libelle": "Incivilité interne (d'un collègue)", "famille_gollac": "Exigences émotionnelles", "conseil": "Ne laissez rien passer entre collègues : posez le cadre et protégez la personne exposée (process d'alerte).", "ressource": "process_incivilite" },
+    { "id": "incivilite_interne", "libelle": "Incivilité interne (d'un collègue)", "famille_gollac": "Exigences émotionnelles", "conseil": "Ne laissez rien passer entre collègues : posez le cadre et protégez la personne exposée. En cas de harcèlement ou d'agissements sexistes, orientez vers le référent dédié.", "ressource": "referent_harcelement" },
     { "id": "evolution_poste", "libelle": "Évolution dans le poste", "famille_gollac": "Manque d'autonomie / marges de manœuvre", "conseil": "Accompagnez la prise de poste : points rapprochés, objectifs ajustés, droit à la montée en compétence." },
     { "id": "evolution_taches", "libelle": "Évolution dans les tâches", "famille_gollac": "Manque d'autonomie / marges de manœuvre", "conseil": "Vérifiez que la complexité est proportionnée et explicitée ; prévoyez un filet de soutien le temps de l'adaptation." },
     { "id": "faible_valorisation", "libelle": "Faible valorisation / reconnaissance", "famille_gollac": "Rapports sociaux dégradés", "conseil": "Rendez la reconnaissance concrète et régulière, pas seulement à l'entretien annuel. Le manque de reconnaissance est un facteur de risque à part entière." },

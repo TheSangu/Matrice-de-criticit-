@@ -31,10 +31,10 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [x] **Catalogue de ressources** créé (`meta.ressources`) : chaque dispositif a un rôle + des champs `contact`/`lien`, rendu en cartes dans « Vers qui orienter »
 - [x] Dispositifs **listés** : RH de proximité, référent RPS, médecine du travail, cellule Céla, proche-aidant, process incivilité, EAE/bilan RH, secours, CIT
 - [x] **Ressources par niveau** (N1→N4) branchées sur le catalogue (ordre = ordre de mobilisation)
-- [~] **Ressources par situation** : incivilité (client/interne) → process incivilité ; vie perso → proche-aidant ; manque de perspective → EAE. *À compléter selon les autres situations.*
+- [x] **Ressources par situation** : incivilité client → process incivilité ; incivilité interne → référent harcèlement ; vie perso → proche-aidant ; manque de perspective → EAE
 - [x] **Contacts / liens réels** intégrés depuis les affichages agence : Céla (0 805 389 958, service-ecoute@qualisocial.com, go.qualisocial.com/goc), process incivilité (base Incidents ServiceNow + alerte DRH `alerte-oc@groupama-oc.fr`), médecine du travail MSA et RH/RPS (chemins Coll'OC), secours (15/17/18/112)
-- [ ] **Données nominatives** (référents nommés, n° directs) volontairement non mises en dur — le site est public ; à trancher avec l'hébergement (chantier F) avant d'ajouter
-- [ ] Préciser **CIT** (rôle, périmètre, situations) et **EAE** (intitulé exact), puis brancher CIT (non rattaché pour l'instant)
+- [x] **Référent harcèlement** avec contacts nominatifs (hébergement intranet privé, non public — voir chantier F)
+- [x] **EAE** = Entretien Annuel d'Évaluation ; **CIT** non affiché (procédure d'alerte interne, non communicable)
 
 ## D — UX & textes
 *Parcours, écran d'accueil, restitution — `index.html`, `assets/app.js`*
@@ -52,7 +52,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 ## F — Technique
 *Déploiement, perf, accessibilité — divers*
 
-- [ ] Décider de l'**hébergement définitif** (public vs Enterprise privé à accès restreint)
+- [x] **Hébergement décidé** : intranet privé (le repo est téléchargé puis publié sur Coll'OC) — non public. Autorise les contacts nominatifs et liens internes dans l'outil.
 - [ ] Vérifier l'**accessibilité** (contrastes, navigation clavier, lecteurs d'écran)
 
 ---
@@ -72,7 +72,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - Bouton **export/impression** : non (pour l'instant)
 - **4 signaux ajoutés** conservés (propos inquiétants, pleurs/émotivité, plaintes somatiques/fatigue, surinvestissement)
 - **Seuils** N1 1-2 · N2 3-5 · N3 6-9 · N4 ≥10 : base validée (à recalibrer)
-- Hébergement : **dépôt public + Pages** (provisoire, le temps de l'aperçu)
+- Hébergement : **intranet privé** (le dépôt est téléchargé puis publié sur Coll'OC, non public). GitHub Pages reste un aperçu de travail.
 - Suivi via **BACKLOG.md**, validation en **direct sur la branche**
 - **Conseils & « à faire » ré-arbitrés** (v2.1) : chaque conseil = lecture + réflexe + piège ; démarches par niveau revues
 - **N4 (Alerte) réservé** à la souffrance installée ou aux drapeaux rouges ; la convergence relationnel/performance plafonne à N3
