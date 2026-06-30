@@ -30,37 +30,43 @@
       "rh_proximite": {
         "libelle": "RH de proximité",
         "role": "Votre interlocuteur RH habituel. À associer dès qu'une situation se formalise, se répète ou demande un cadre (suivi, organisation, droits).",
-        "contact": "",
+        "contact": "Coll'OC › Espace RH",
         "lien": ""
       },
       "referent_rps": {
-        "libelle": "Référent RPS",
-        "role": "Spécialiste des risques psychosociaux : conseil et appui sur les situations de souffrance ou de tension liées au travail.",
-        "contact": "",
+        "libelle": "Référent RPS / Qualité de Vie au Travail",
+        "role": "Conseil et appui sur les situations de souffrance ou de tension liées au travail.",
+        "contact": "Coll'OC › Espace RH › Ma Qualité de Vie au Travail",
         "lien": ""
       },
       "medecine_travail": {
-        "libelle": "Médecine du travail",
-        "role": "Santé au travail : à solliciter face à la fatigue, aux plaintes somatiques ou à un mal-être. Seule habilitée sur le volet médical.",
-        "contact": "",
+        "libelle": "Médecine du travail (MSA)",
+        "role": "Service de santé au travail de la MSA. À solliciter face à la fatigue, aux plaintes somatiques ou à un mal-être ; seule habilitée sur le volet médical. La DRH peut déclencher une visite.",
+        "contact": "Coordonnées via Coll'OC › Espace RH › Affichage réglementaire",
         "lien": ""
       },
       "cellule_cela": {
-        "libelle": "Cellule d'écoute Céla",
-        "role": "Soutien psychologique confidentiel, accessible directement par le collaborateur, 24h/24.",
-        "contact": "",
-        "lien": ""
+        "libelle": "Cellule d'écoute Céla (Qualisocial)",
+        "role": "Écoute psychologique anonyme, confidentielle et gratuite, 24h/24 et 7j/7, pour le collaborateur — et conseil au manager face à un collaborateur sensible.",
+        "contact": "0 805 389 958 (gratuit) · service-ecoute@qualisocial.com",
+        "lien": "https://go.qualisocial.com/goc"
       },
       "proche_aidant": {
-        "libelle": "Dispositif proche-aidant",
-        "role": "Accompagnement quand la vie personnelle (aider un proche) pèse sur le travail : aménagements, droits, écoute.",
-        "contact": "",
-        "lien": ""
+        "libelle": "Soutien proche-aidant (Céla)",
+        "role": "Quand la vie personnelle (aider un proche) pèse sur le travail : le volet social et familial de Céla accompagne (aidant, démarches, écoute).",
+        "contact": "0 805 389 958 (gratuit) · service-ecoute@qualisocial.com",
+        "lien": "https://go.qualisocial.com/goc"
       },
       "process_incivilite": {
         "libelle": "Process incivilité",
-        "role": "Procédure de déclaration et de traitement des incivilités, clients comme internes : tracer, protéger, accompagner.",
-        "contact": "",
+        "role": "Incivilité client ou interne : prévenez votre N+1 (et N+2 selon gravité), tracez l'incident, et activez la procédure d'alerte DRH. Selon la gravité : dépôt de plainte accompagné par le RCS. Pour le harcèlement / les agissements sexistes, un référent dédié est identifié sur Coll'OC.",
+        "contact": "Base Incidents (ServiceNow) · alerte DRH : alerte-oc@groupama-oc.fr",
+        "lien": "https://groupama.service-now.com/services_portal_groupama"
+      },
+      "alerte_drh": {
+        "libelle": "Procédure d'alerte DRH",
+        "role": "Signaler à la DRH une situation grave (souffrance installée, incivilité, harcèlement). La DRH oriente, traite les cas particuliers et peut déclencher une visite auprès de la médecine du travail.",
+        "contact": "alerte-oc@groupama-oc.fr",
         "lien": ""
       },
       "cit": {
@@ -77,8 +83,8 @@
       },
       "secours": {
         "libelle": "Secours — danger immédiat",
-        "role": "Propos suicidaires, détresse aiguë : alertez sans attendre et restez auprès de la personne.",
-        "contact": "15 (SAMU) · 112 (urgences)",
+        "role": "Propos suicidaires, détresse aiguë, atteinte physique : alertez sans attendre et restez auprès de la personne.",
+        "contact": "15 (SAMU) · 18 (pompiers) · 17 (police) · 112",
         "lien": ""
       }
     }
@@ -120,7 +126,7 @@
         "Ne portez pas seul : associez les RH, et le référent RPS selon le cas.",
         "Agissez sur ce qui pèse dans votre périmètre : alléger, réorganiser, clarifier."
       ],
-      "ressources": ["rh_proximite", "referent_rps", "medecine_travail"]
+      "ressources": ["rh_proximite", "referent_rps", "medecine_travail", "cellule_cela"]
     },
     {
       "id": "N4", "rang": 4, "libelle": "Alerte", "couleur": "#c53030",
@@ -131,7 +137,7 @@
         "Assurez une présence bienveillante : gardez le lien, ne laissez pas la personne isolée.",
         "Informez les RH. Danger immédiat (propos suicidaires, détresse aiguë) : appelez le 15 et restez auprès d'elle."
       ],
-      "ressources": ["secours", "cellule_cela", "medecine_travail", "referent_rps", "rh_proximite"]
+      "ressources": ["secours", "cellule_cela", "medecine_travail", "alerte_drh", "referent_rps", "rh_proximite"]
     }
   ],
   "signaux": [

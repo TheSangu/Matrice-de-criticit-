@@ -32,7 +32,8 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [x] Dispositifs **listés** : RH de proximité, référent RPS, médecine du travail, cellule Céla, proche-aidant, process incivilité, EAE/bilan RH, secours, CIT
 - [x] **Ressources par niveau** (N1→N4) branchées sur le catalogue (ordre = ordre de mobilisation)
 - [~] **Ressources par situation** : incivilité (client/interne) → process incivilité ; vie perso → proche-aidant ; manque de perspective → EAE. *À compléter selon les autres situations.*
-- [ ] **Contacts / liens réels** à renseigner (champs `contact`/`lien` aujourd'hui vides, affichés seulement une fois remplis)
+- [x] **Contacts / liens réels** intégrés depuis les affichages agence : Céla (0 805 389 958, service-ecoute@qualisocial.com, go.qualisocial.com/goc), process incivilité (base Incidents ServiceNow + alerte DRH `alerte-oc@groupama-oc.fr`), médecine du travail MSA et RH/RPS (chemins Coll'OC), secours (15/17/18/112)
+- [ ] **Données nominatives** (référents nommés, n° directs) volontairement non mises en dur — le site est public ; à trancher avec l'hébergement (chantier F) avant d'ajouter
 - [ ] Préciser **CIT** (rôle, périmètre, situations) et **EAE** (intitulé exact), puis brancher CIT (non rattaché pour l'instant)
 
 ## D — UX & textes
