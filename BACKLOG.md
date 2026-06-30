@@ -54,7 +54,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 *Déploiement, perf, accessibilité — divers*
 
 - [x] **Hébergement décidé** : intranet privé (le repo est téléchargé puis publié sur Coll'OC) — non public. Autorise les contacts nominatifs et liens internes dans l'outil.
-- [ ] Vérifier l'**accessibilité** (contrastes, navigation clavier, lecteurs d'écran)
+- [~] **Accessibilité** : contrastes AA des niveaux et textes muted corrigés ; focus déplacé à chaque étape + compteur d'étape sr-only ; bandeau `role=status` annoncé ; `role=group` sur les familles ; liens PDF annoncés ; coupure des emails longs ; état d'erreur en `role=alert`. *Reste à valider sur lecteur d'écran réel (NVDA/VoiceOver) et viewport ~320px.*
 
 ---
 

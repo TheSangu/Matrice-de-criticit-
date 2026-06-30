@@ -8,7 +8,7 @@
   --bg: #f4f7f5;
   --surface: #ffffff;
   --text: #2c3a42;
-  --muted: #6b7a82;
+  --muted: #586a72;
   --border: #e1e8e3;
   --focus: #00875a;
 
@@ -75,6 +75,7 @@ body {
 .affichages-theme { margin: 0.7rem 0 0.2rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 700; }
 .affichages-liste { margin: 0 0 0.6rem; padding-left: 1.1rem; }
 .affichages-liste li { margin-bottom: 0.3rem; }
+.affichages-liste a { overflow-wrap: anywhere; }
 
 /* Légende familles */
 .legende { display: inline-flex; flex-wrap: wrap; gap: 0.1rem 0.8rem; }
@@ -109,9 +110,9 @@ body {
 
 /* ---------- Résultat ---------- */
 .bandeau-niveau { border-radius: var(--radius); padding: 0.9rem 1.1rem; color: #fff; }
-.bandeau-niveau .niv-id { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.9; }
+.bandeau-niveau .niv-id { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .bandeau-niveau .niv-libelle { font-size: 1.45rem; font-weight: 800; margin: 0.05rem 0 0.2rem; }
-.bandeau-niveau .niv-resume { margin: 0; font-size: 0.96rem; opacity: 0.97; }
+.bandeau-niveau .niv-resume { margin: 0; font-size: 0.96rem; }
 
 .lecture { color: var(--muted); font-size: 0.85rem; margin: 0.6rem 0 0.9rem; }
 
@@ -127,10 +128,10 @@ body {
 .liste-puces { margin: 0; padding-left: 1.1rem; }
 .liste-puces li { margin-bottom: 0.35rem; }
 .ressources { list-style: none; padding: 0; margin: 0; }
-.ressource-item { display: block; padding: 0.5rem 0.65rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.4rem; background: #fafbfc; }
+.ressource-item { display: block; padding: 0.5rem 0.65rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.4rem; background: #fafbfc; overflow-wrap: anywhere; }
 .ressource-nom { display: block; font-weight: 600; font-size: 0.92rem; }
 .ressource-role { display: block; font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.35; }
-.ressource-contact { display: block; font-size: 0.82rem; margin-top: 0.25rem; font-weight: 600; }
+.ressource-contact { display: block; font-size: 0.82rem; margin-top: 0.25rem; font-weight: 600; overflow-wrap: anywhere; }
 .ressource-contact a { font-weight: 500; }
 .detail-ressource { margin-top: 0.3rem !important; font-size: 0.85rem; color: var(--muted); }
 .appui-note { margin: 0.5rem 0 0; font-size: 0.83rem; color: var(--muted); font-style: italic; }

@@ -18,9 +18,12 @@
     .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
     .then(function (json) { data = json; init(); })
     .catch(function (err) {
+      if (window.console && console.error) console.error("Chargement du contenu impossible :", err);
       $("#app").innerHTML =
-        '<section class="step"><h2>Chargement impossible</h2><p>Le contenu n\'a pas pu être chargé (' +
-        String(err) + ').</p><p class="opt">En local, lancez un petit serveur (voir le README).</p></section>';
+        '<section class="step" role="alert" tabindex="-1" id="erreur-chargement">' +
+        "<h2>Chargement impossible</h2><p>Le contenu n'a pas pu être chargé. Réessayez plus tard ou " +
+        'signalez-le au support.</p><p class="opt">En local, lancez un petit serveur (voir le README).</p></section>';
+      var box = $("#erreur-chargement"); if (box) box.focus();
     });
 
   function init() {
@@ -58,7 +61,10 @@
       if (!sigs.length) return;
       var col = el("div", "famille-col");
       col.style.setProperty("--fc", f.couleur);
+      col.setAttribute("role", "group");
+      col.setAttribute("aria-labelledby", "fam-" + fid);
       var h = el("p", "famille-titre");
+      h.id = "fam-" + fid;
       h.innerHTML = '<span class="puce">' + f.puce + "</span> " + f.libelle;
       col.appendChild(h);
       sigs.forEach(function (s) { col.appendChild(chip(s, "signaux")); });
@@ -112,7 +118,25 @@
     else if (STEPS[i] === "contexte") suivant.textContent = "Voir le résultat";
     else if (STEPS[i] === "resultat") suivant.textContent = "Nouvelle situation";
     else suivant.textContent = "Suivant →";
+
+    // a11y : repère d'étape pour lecteurs d'écran + focus sur la tête de l'étape
+    // (annonce le contenu révélé, dont le bandeau role=status du résultat).
+    majCompteurEtape(i);
+    var cible = (STEPS[i] === "resultat") ? $("#bandeau-niveau") : $("#step-" + STEPS[i] + " h2");
+    if (cible) { cible.setAttribute("tabindex", "-1"); cible.focus({ preventScroll: true }); }
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* Compteur d'étape (visible des seuls lecteurs d'écran). */
+  function majCompteurEtape(i) {
+    var prev = document.querySelector(".sr-step-count");
+    if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+    if (i < 1) return; // accueil : pas de compteur
+    var h = $("#step-" + STEPS[i] + " h2");
+    if (!h) return;
+    var s = el("span", "sr-only sr-step-count");
+    s.textContent = " (étape " + i + " sur " + (STEPS.length - 1) + ")";
+    h.appendChild(s);
   }
 
   function recommencer() {
@@ -171,10 +195,11 @@
       rendreRessources($("#ressources"), n.ressources);
       $("#appui-note").textContent = data.meta.appui_note || "";
       rendreDetail(res);
-      rendreAffichages(res, n);
-    } else {
-      $("#affichages").hidden = true;
     }
+    // Les communications sont contextuelles : elles peuvent dépendre d'un
+    // contexte coché seul (donc même en N0). rendreAffichages gère son propre
+    // état d'affichage selon les ressources actives.
+    rendreAffichages(res, n);
   }
 
   /* ---------- Résultat : communications à diffuser, filtrées sur la situation ---------- */
@@ -213,6 +238,8 @@
         var li = el("li");
         var a = el("a"); a.href = it.fichier; a.target = "_blank"; a.rel = "noopener";
         a.textContent = it.titre;
+        var hint = el("span", "sr-only"); hint.textContent = " (PDF, nouvel onglet)";
+        a.appendChild(hint);
         li.appendChild(a);
         ul.appendChild(li);
       });
@@ -253,6 +280,8 @@
       if (r.contact) c.appendChild(document.createTextNode(" · "));
       var a = el("a"); a.href = r.lien; a.target = "_blank"; a.rel = "noopener";
       a.textContent = "en savoir plus";
+      var hint = el("span", "sr-only"); hint.textContent = " (" + r.libelle + ", nouvel onglet)";
+      a.appendChild(hint);
       c.appendChild(a);
     }
     return c;
