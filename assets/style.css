@@ -69,15 +69,11 @@ body {
 .points { padding-left: 1.1rem; }
 .points li { margin-bottom: 0.4rem; }
 
-/* Accueil : affichages à diffuser */
-.affichages { margin-top: 1.2rem; border: 1px solid var(--border); border-radius: 10px; background: #fafbfc; }
-.affichages > summary { cursor: pointer; padding: 0.7rem 0.9rem; font-weight: 600; list-style: none; }
-.affichages > summary::-webkit-details-marker { display: none; }
-.affichages > summary::before { content: "▸ "; color: var(--muted); }
-.affichages[open] > summary::before { content: "▾ "; }
-.affichages-intro { margin: 0 0.9rem 0.4rem; font-size: 0.88rem; color: var(--muted); }
-.affichages-theme { margin: 0.7rem 0.9rem 0.2rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 700; }
-.affichages-liste { margin: 0 0.9rem 0.6rem; padding-left: 1.1rem; }
+/* Résultat : communications à diffuser (contextuelles) */
+.bloc-coms { margin-top: 0.2rem; }
+.affichages-intro { margin: 0 0 0.5rem; font-size: 0.88rem; color: var(--muted); }
+.affichages-theme { margin: 0.7rem 0 0.2rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 700; }
+.affichages-liste { margin: 0 0 0.6rem; padding-left: 1.1rem; }
 .affichages-liste li { margin-bottom: 0.3rem; }
 
 /* Légende familles */

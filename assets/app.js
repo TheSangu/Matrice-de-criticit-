@@ -42,34 +42,10 @@
       leg.appendChild(s);
     });
 
-    rendreAffichages(m.affichages);
     rendreSignaux();
     rendreContexte();
     brancher();
     aller(0);
-  }
-
-  /* ---------- Accueil : affichages à diffuser (rappels de communication) ---------- */
-  function rendreAffichages(aff) {
-    var box = $("#affichages");
-    if (!aff || !aff.themes || !aff.themes.length) { box.hidden = true; return; }
-    box.hidden = false;
-    $("#affichages-intro").textContent = aff.intro || "";
-    var cont = $("#affichages-themes");
-    cont.innerHTML = "";
-    aff.themes.forEach(function (t) {
-      if (!t.items || !t.items.length) return;
-      var h = el("p", "affichages-theme"); h.textContent = t.titre; cont.appendChild(h);
-      var ul = el("ul", "affichages-liste");
-      t.items.forEach(function (it) {
-        var li = el("li");
-        var a = el("a"); a.href = it.fichier; a.target = "_blank"; a.rel = "noopener";
-        a.textContent = it.titre;
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-      cont.appendChild(ul);
-    });
   }
 
   /* ---------- Étape signaux : colonnes par famille ---------- */
@@ -195,7 +171,53 @@
       rendreRessources($("#ressources"), n.ressources);
       $("#appui-note").textContent = data.meta.appui_note || "";
       rendreDetail(res);
+      rendreAffichages(res, n);
+    } else {
+      $("#affichages").hidden = true;
     }
+  }
+
+  /* ---------- Résultat : communications à diffuser, filtrées sur la situation ---------- */
+  function rendreAffichages(res, n) {
+    var box = $("#affichages");
+    var aff = data.meta.affichages;
+    if (!aff || !aff.items) { box.hidden = true; return; }
+
+    // Ressources « actives » = celles du niveau + celles des contextes cochés
+    var actives = {};
+    (n.ressources || []).forEach(function (r) { actives[r] = true; });
+    res.ctx.forEach(function (c) { if (c.ressource) actives[c.ressource] = true; });
+
+    var items = aff.items.filter(function (it) {
+      return (it.ressources || []).some(function (r) { return actives[r]; });
+    });
+    if (!items.length) { box.hidden = true; return; }
+
+    box.hidden = false;
+    $("#affichages-titre").textContent = aff.titre || "Communications à diffuser";
+    $("#affichages-intro").textContent = aff.intro || "";
+
+    var cont = $("#affichages-themes");
+    cont.innerHTML = "";
+    var themes = [];
+    items.forEach(function (it) {
+      var t = it.theme || "";
+      var grp = themes.filter(function (g) { return g.titre === t; })[0];
+      if (!grp) { grp = { titre: t, items: [] }; themes.push(grp); }
+      grp.items.push(it);
+    });
+    themes.forEach(function (g) {
+      if (g.titre) { var h = el("p", "affichages-theme"); h.textContent = g.titre; cont.appendChild(h); }
+      var ul = el("ul", "affichages-liste");
+      g.items.forEach(function (it) {
+        var li = el("li");
+        var a = el("a"); a.href = it.fichier; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = it.titre;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+      cont.appendChild(ul);
+    });
   }
 
   function remplirListe(node, items) {

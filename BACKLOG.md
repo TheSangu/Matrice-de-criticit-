@@ -42,7 +42,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [ ] Affiner l'**écran d'accueil** (texte, ton)
 - [ ] Revoir les **formulations** de la restitution
 - [ ] Collecter les idées d'amélioration du parcours
-- [x] **Rappels de communication** : section repliable sur l'accueil avec les affichages officiels (Céla, incivilités, AS-HS) consultables/téléchargeables — fichiers dans `assets/affichages/`
+- [x] **Communications à diffuser** : affichages officiels (Céla, incivilités, AS-HS) en fin de résultat, **filtrés selon la situation** (déclenchés par les ressources actives) — fichiers dans `assets/affichages/`
 
 ## E — Design / charte
 *Couleurs, logo, densité, accessibilité — `assets/style.css`*
