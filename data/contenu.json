@@ -25,6 +25,11 @@
         { "titre": "Affichage AS-HS 2026 — harcèlement / agissements sexistes", "fichier": "assets/affichages/affichage-as-hs-2026.pdf", "theme": "Harcèlement / agissements sexistes", "ressources": ["referent_harcelement"] }
       ]
     },
+    "ressources_utiles": {
+      "titre": "Ressources utiles — à connaître et à diffuser",
+      "intro": "Les dispositifs Groupama d'Oc à garder en tête et à faire connaître à vos équipes, quel que soit le niveau.",
+      "ids": ["cellule_cela", "referent_rps", "medecine_travail", "rh_proximite", "proche_aidant", "process_incivilite", "referent_harcelement", "alerte_drh", "secours"]
+    },
     "familles": {
       "sante": { "libelle": "Souffrance / santé", "puce": "🔴", "couleur": "#c53030" },
       "relationnel": { "libelle": "Relationnel / comportement", "puce": "🟠", "couleur": "#c05621" },

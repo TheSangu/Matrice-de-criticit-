@@ -69,6 +69,11 @@ body {
 .points { padding-left: 1.1rem; }
 .points li { margin-bottom: 0.4rem; }
 
+/* Résultat : annuaire permanent (sensibilisation) */
+.bloc-ressources { margin-top: 0.2rem; }
+.bloc-ressources .ressources { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.bloc-ressources .ressource-item { margin-bottom: 0; }
+
 /* Résultat : communications à diffuser (contextuelles) */
 .bloc-coms { margin-top: 0.2rem; }
 .affichages-intro { margin: 0 0 0.5rem; font-size: 0.88rem; color: var(--muted); }
@@ -168,5 +173,6 @@ body {
   .grille-familles { grid-template-columns: 1fr; gap: 0.7rem; }
   .resultat-cols { grid-template-columns: 1fr; }
   .segmente { grid-template-columns: 1fr; }
+  .bloc-ressources .ressources { grid-template-columns: 1fr; }
   .steps { display: none; }
 }

@@ -200,6 +200,19 @@
     // contexte coché seul (donc même en N0). rendreAffichages gère son propre
     // état d'affichage selon les ressources actives.
     rendreAffichages(res, n);
+    // Annuaire permanent (sensibilisation) : toujours affiché.
+    rendreRessourcesUtiles();
+  }
+
+  /* Annuaire permanent des dispositifs, en fin de résultat (communiquer / sensibiliser). */
+  function rendreRessourcesUtiles() {
+    var box = $("#ressources-utiles");
+    var ru = data.meta.ressources_utiles;
+    if (!ru || !ru.ids || !ru.ids.length) { box.hidden = true; return; }
+    box.hidden = false;
+    $("#ressources-utiles-titre").textContent = ru.titre || "Ressources utiles";
+    $("#ressources-utiles-intro").textContent = ru.intro || "";
+    rendreRessources($("#ressources-utiles-liste"), ru.ids);
   }
 
   /* ---------- Résultat : communications à diffuser, filtrées sur la situation ---------- */

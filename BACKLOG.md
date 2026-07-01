@@ -43,6 +43,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [ ] Revoir les **formulations** de la restitution
 - [ ] Collecter les idées d'amélioration du parcours
 - [x] **Communications à diffuser** : affichages officiels (Céla, incivilités, AS-HS) en fin de résultat, **filtrés selon la situation** (déclenchés par les ressources actives) — fichiers dans `assets/affichages/`
+- [x] **Ressources utiles (annuaire permanent)** en fin de résultat : les 9 dispositifs avec rôle + contact, toujours affichés (logique *communiquer / sensibiliser*, distincte du « Vers qui orienter » qui reste la mobilisation par niveau). Décision : ne pas forcer Céla en N2 — l'annuaire le rend visible à tous les niveaux.
 
 ## E — Design / charte
 *Couleurs, logo, densité, accessibilité — `assets/style.css`*
