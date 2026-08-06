@@ -51,6 +51,17 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [ ] Remplacer le logo par une version **HD / SVG** si disponible
 - [ ] Ajustements densité / contrastes éventuels
 
+## G — Studio / éditeur modulable
+*Rendre l'outil modifiable sans code et sans Claude — voir [`CADRAGE-BUILDER.md`](CADRAGE-BUILDER.md)*
+
+- [x] **Cadrage** du chantier Studio → Hub → outils (`CADRAGE-BUILDER.md`)
+- [x] **Socle de rendu partagé** : `app.js` lit `window.__CONTENU__` (page publiée / prévisu) ou `data/contenu.json` (dépôt)
+- [x] **Étape 1 — Studio (archétype « évaluation »)** : `studio.html` édite toute la matrice par formulaires (identité/prévention, signaux, contexte, niveaux, ressources, affiches), **aperçu en direct**, autosave, enregistrer/publier
+- [ ] **Étape 2 — Hub multi-outils** : plusieurs outils dans un projet + page d'accueil à cartes
+- [ ] **Étape 3 — Archétype « affiche à blocs » + import de documents** (PDF/images embarqués)
+- [ ] **Étape 4 — Autonomie** : validations, garde-fous, **guide du mainteneur** non-technique
+- [ ] Étape 5 (option) — autres archétypes (annuaire, procédure/checklist)
+
 ## F — Technique
 *Déploiement, perf, accessibilité — divers*
 

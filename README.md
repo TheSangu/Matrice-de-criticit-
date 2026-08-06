@@ -37,6 +37,28 @@ CADRAGE.md            Document de cadrage / socle du projet
 
 ## Modifier le contenu
 
+### Sans code — le Studio (recommandé)
+
+Ouvrez **`studio.html`** dans le navigateur : un éditeur à formulaires qui permet
+de modifier toute la matrice (signaux, conseils, niveaux, ressources, textes de
+prévention, affiches) **sans toucher au JSON**, avec un **aperçu en direct** de ce
+que verront les managers.
+
+- Le travail est **mémorisé automatiquement** dans le navigateur.
+- **Enregistrer le projet** : télécharge une sauvegarde (`projet-matrice.json`)
+  réouvrable dans le Studio (« Charger un projet »).
+- **Publier ▾** : génère la page finale (`index.html` autonome) à déposer sur
+  l'intranet, ou exporte `contenu.json` pour le dépôt.
+- **Aucune donnée ne sort** : tout reste dans le navigateur (comme l'outil public).
+
+Comme l'outil, le Studio charge son contenu via `fetch` : lancez un petit serveur
+local (voir « Tester en local ») plutôt que d'ouvrir le fichier en `file://`.
+
+Le cadrage de ce chantier (Studio → Hub → outils) est dans
+[`CADRAGE-BUILDER.md`](CADRAGE-BUILDER.md).
+
+### À la main (JSON)
+
 Tout le contenu vit dans `data/contenu.json` :
 
 - **`signaux`** : libellé, `categorie`, `poids` (1–3), `drapeau_rouge`, `conseil`.

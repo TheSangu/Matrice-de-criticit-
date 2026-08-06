@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio — Éditeur de la matrice</title>
+  <meta name="description" content="Atelier d'édition de la matrice de criticité. Aucune donnée n'est transmise : tout reste dans votre navigateur." />
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="assets/studio.css" />
+</head>
+<body>
+  <!-- Barre d'outils -->
+  <header class="studio-bar">
+    <div class="studio-bar-inner">
+      <div class="studio-brand">
+        <span class="studio-brand-mark" aria-hidden="true">✎</span>
+        <span class="studio-brand-text">Studio <span class="studio-brand-sub">édition de la matrice</span></span>
+      </div>
+
+      <div class="studio-actions">
+        <span id="statut" class="statut" role="status" aria-live="polite"></span>
+        <label class="btn btn-ghost" for="import-projet">
+          Charger un projet
+          <input id="import-projet" type="file" accept="application/json,.json" hidden />
+        </label>
+        <button id="btn-enregistrer" class="btn btn-ghost" type="button">Enregistrer le projet</button>
+        <button id="btn-reinit" class="btn btn-ghost btn-danger" type="button">Réinitialiser</button>
+        <button id="btn-publier" class="btn btn-primary" type="button">Publier ▾</button>
+      </div>
+    </div>
+    <!-- Menu de publication -->
+    <div id="menu-publier" class="menu-publier" hidden>
+      <button type="button" data-action="publier-html">Publier la page (HTML autonome)</button>
+      <button type="button" data-action="export-json">Exporter le contenu (contenu.json, pour le dépôt)</button>
+      <button type="button" data-action="apercu-onglet">Ouvrir l'aperçu dans un onglet</button>
+    </div>
+  </header>
+
+  <main class="studio-main">
+    <!-- Colonne édition -->
+    <section class="studio-edit" aria-label="Édition du contenu">
+      <nav class="studio-tabs" id="tabs" aria-label="Sections">
+        <button class="tab actif" type="button" data-tab="identite">Identité &amp; prévention</button>
+        <button class="tab" type="button" data-tab="signaux">Signaux</button>
+        <button class="tab" type="button" data-tab="contexte">Contexte</button>
+        <button class="tab" type="button" data-tab="niveaux">Niveaux</button>
+        <button class="tab" type="button" data-tab="ressources">Ressources</button>
+        <button class="tab" type="button" data-tab="affiches">Affiches &amp; annuaire</button>
+      </nav>
+      <div class="studio-panels" id="panels">
+        <div class="panel-loading">Chargement du contenu…</div>
+      </div>
+    </section>
+
+    <!-- Colonne prévisualisation -->
+    <section class="studio-preview" aria-label="Prévisualisation">
+      <div class="preview-head">
+        <span class="preview-titre">Aperçu en direct</span>
+        <span class="preview-hint">Ce que verront les managers</span>
+      </div>
+      <div class="preview-frame-wrap">
+        <iframe id="preview" title="Aperçu de la matrice" class="preview-frame"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/studio.js"></script>
+</body>
+</html>

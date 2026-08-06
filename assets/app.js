@@ -14,8 +14,17 @@
   function $(s) { return document.querySelector(s); }
   function el(t, c) { var n = document.createElement(t); if (c) n.className = c; return n; }
 
-  fetch("data/contenu.json", { cache: "no-store" })
-    .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  // Résolution du contenu, dans l'ordre :
+  //  1) contenu embarqué dans la page (window.__CONTENU__) → page publiée par le
+  //     Studio ou prévisualisation : aucun accès réseau, fonctionne même en file://.
+  //  2) sinon, chargement du fichier de données (mode dépôt / développement).
+  function chargerContenu() {
+    if (window.__CONTENU__) return Promise.resolve(window.__CONTENU__);
+    return fetch("data/contenu.json", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+  }
+
+  chargerContenu()
     .then(function (json) { data = json; init(); })
     .catch(function (err) {
       if (window.console && console.error) console.error("Chargement du contenu impossible :", err);
