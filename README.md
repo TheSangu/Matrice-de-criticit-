@@ -46,8 +46,11 @@ toucher au JSON**, avec un **aperçu en direct** de ce que verront les managers.
 - Le travail est **mémorisé automatiquement** dans le navigateur.
 - **Enregistrer le projet** : télécharge une sauvegarde (`projet-matrice.json`)
   réouvrable dans le Studio (« Charger un projet »).
-- **Publier ▾** : génère la page finale (`index.html` autonome) à déposer sur
-  l'intranet, ou exporte `contenu.json` pour le dépôt.
+- **Importer un PDF / une image** (onglet « Affiches ») : le document est
+  **embarqué** dans la page publiée — rien à déposer à côté, il suffit de
+  remplacer l'`index.html` sur l'intranet.
+- **Publier ▾ → Publier la page** : génère la page finale (`index.html` autonome)
+  à déposer sur l'intranet.
 - **Aucune donnée ne sort** : tout reste dans le navigateur (comme l'outil public).
 
 **Deux façons de l'ouvrir :**

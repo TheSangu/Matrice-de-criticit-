@@ -57,10 +57,10 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [x] **Cadrage** du chantier Studio → Hub → outils (`CADRAGE-BUILDER.md`)
 - [x] **Socle de rendu partagé** : `app.js` lit `window.__CONTENU__` (page publiée / prévisu) ou `data/contenu.json` (dépôt)
 - [x] **Étape 1 — Studio (archétype « évaluation »)** : `studio.html` édite toute la matrice par formulaires (identité/prévention, signaux, contexte, niveaux, ressources, affiches), **aperçu en direct**, autosave, enregistrer/publier
-- [ ] **Étape 2 — Hub multi-outils** : plusieurs outils dans un projet + page d'accueil à cartes
-- [ ] **Étape 3 — Archétype « affiche à blocs » + import de documents** (PDF/images embarqués)
-- [ ] **Étape 4 — Autonomie** : validations, garde-fous, **guide du mainteneur** non-technique
-- [ ] Étape 5 (option) — autres archétypes (annuaire, procédure/checklist)
+- [x] **Studio autonome** : `studio-autonome.html`, fichier unique ouvrable en **double-clic** (sans serveur) — généré par `build-studio.mjs`
+- [x] **Import de documents** : import d'un PDF/image dans l'onglet « Affiches », **embarqué** dans la page publiée (ouvert via Blob) — mise à jour des affiches 100 % autonome
+- [ ] **Guide du mainteneur** non-technique (mode d'emploi pas à pas)
+- **Périmètre arrêté à la matrice** (2026-08-10) : ~~hub multi-outils~~, ~~affiche à blocs~~, ~~autres archétypes~~ hors périmètre (voir `CADRAGE-BUILDER.md` §8)
 
 ## F — Technique
 *Déploiement, perf, accessibilité — divers*

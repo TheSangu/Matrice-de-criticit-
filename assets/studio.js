@@ -106,12 +106,15 @@
 
   /* ---------- état / sauvegarde ---------- */
   function marquerStatut(t, saving) { var s = $("#statut"); if (!s) return; s.textContent = t; s.classList.toggle("saving", !!saving); }
-  function sauverLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(projet)); } catch (e) { /* quota / indispo */ } }
+  function sauverLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(projet)); return true; } catch (e) { return false; } }
 
   // Modification d'un champ : autosave + prévisu (tous deux temporisés).
   function commit() {
     marquerStatut("Enregistrement…", true);
-    clearTimeout(saveTimer); saveTimer = setTimeout(function () { sauverLocal(); marquerStatut("Enregistré ✓"); }, 400);
+    clearTimeout(saveTimer); saveTimer = setTimeout(function () {
+      var ok = sauverLocal();
+      marquerStatut(ok ? "Enregistré ✓" : "⚠ Sauvegarde auto pleine — « Enregistrer le projet »");
+    }, 400);
     clearTimeout(previewTimer); previewTimer = setTimeout(updatePreview, 300);
   }
   // Modification de structure (ajout / suppression / déplacement) : idem + reconstruit le panneau.
@@ -411,22 +414,20 @@
     var aff = projet.meta.affichages = projet.meta.affichages || { titre: "", intro: "", items: [] };
     host.appendChild(champ("Titre du bloc", inputText(aff.titre, set(aff, "titre"))));
     host.appendChild(champ("Introduction", inputArea(aff.intro, set(aff, "intro"))));
-    noteInfo(host, "Le champ « Fichier » pointe vers un PDF déjà présent dans assets/affichages/. L'import de nouveaux documents depuis le Studio arrive à l'étape 3.");
+    noteInfo(host, "Pour chaque affiche : soit vous « Importez » un PDF/image (il sera embarqué dans la page publiée, rien à déposer ailleurs), soit vous saisissez le chemin d'un PDF déjà présent dans assets/affichages/.");
     aff.items = aff.items || [];
     aff.items.forEach(function (it, i) {
       var carte = carteListe(aff.items, i, it.titre || "(sans titre)");
       carte.appendChild(champ("Titre affiché", inputText(it.titre, set(it, "titre"))));
-      var row = ce("div", "champ-inline");
-      row.appendChild(champ("Fichier <span class='aide'>(chemin du PDF)</span>", inputText(it.fichier, set(it, "fichier"))));
-      row.appendChild(champ("Thème <span class='aide'>(regroupement)</span>", inputText(it.theme, set(it, "theme"))));
-      carte.appendChild(row);
+      champLabelBloc(carte, "Document", blocDocument(it));
+      carte.appendChild(champ("Thème <span class='aide'>(regroupement)</span>", inputText(it.theme, set(it, "theme"))));
       it.ressources = it.ressources || [];
       champLabelBloc(carte, "Affichée quand ces ressources sont actives",
         listeIds(it.ressources, { libelleDe: libelleRessource, disponibles: function () { return optionsRessources(false); }, ajoutLabel: "+ Lier une ressource" }));
       host.appendChild(carte);
     });
     ajouterBouton(host, "+ Ajouter une affiche", function () {
-      aff.items.push({ titre: "Nouvelle affiche", fichier: "assets/affichages/", theme: "", ressources: [] });
+      aff.items.push({ titre: "Nouvelle affiche", fichier: "", theme: "", ressources: [] });
       majStructure();
     });
 
@@ -437,6 +438,74 @@
     ru.ids = ru.ids || [];
     champLabelBloc(host, "Dispositifs listés <span class='aide'>(ordre = ordre d'affichage)</span>",
       listeIds(ru.ids, { libelleDe: libelleRessource, disponibles: function () { return optionsRessources(false); }, ajoutLabel: "+ Ajouter à l'annuaire" }));
+  }
+
+  /* ---------- import de documents (affiches) ---------- */
+  // Bloc « Document » d'une affiche : fichier embarqué (importé) ou chemin existant.
+  function blocDocument(it) {
+    var wrap = ce("div");
+    if (it.fichier_data) {
+      var info = ce("div", "doc-attache");
+      var nom = ce("span", "doc-nom"); nom.textContent = "📎 " + (it.fichier || "document");
+      var taille = ce("span", "doc-taille"); taille.textContent = tailleDepuisDataURI(it.fichier_data);
+      info.appendChild(nom); info.appendChild(taille);
+      wrap.appendChild(info);
+      var actions = ce("div", "doc-actions");
+      actions.appendChild(boutonImport(it, "Remplacer le fichier"));
+      var retirer = ce("button", "btn-doc-retirer"); retirer.type = "button"; retirer.textContent = "Retirer le fichier";
+      retirer.addEventListener("click", function () {
+        if (!window.confirm("Retirer le fichier embarqué de cette affiche ?")) return;
+        delete it.fichier_data; majStructure();
+      });
+      actions.appendChild(retirer);
+      wrap.appendChild(actions);
+    } else {
+      wrap.appendChild(champ("Chemin du fichier <span class='aide'>(PDF déjà présent dans le site)</span>", inputText(it.fichier, set(it, "fichier"))));
+      var actions2 = ce("div", "doc-actions");
+      actions2.appendChild(boutonImport(it, "Importer un PDF / une image"));
+      wrap.appendChild(actions2);
+    }
+    return wrap;
+  }
+
+  function boutonImport(it, label) {
+    var lab = ce("label", "btn-import");
+    lab.appendChild(document.createTextNode(label));
+    var inp = ce("input"); inp.type = "file"; inp.accept = "application/pdf,image/*"; inp.hidden = true;
+    inp.addEventListener("change", function (e) {
+      importerDocument(it, e.target.files && e.target.files[0]);
+      e.target.value = "";
+    });
+    lab.appendChild(inp);
+    return lab;
+  }
+
+  function importerDocument(it, file) {
+    if (!file) return;
+    var MAX = 20 * 1024 * 1024;
+    if (file.size > MAX) { window.alert("Fichier trop volumineux (" + tailleLisible(file.size) + "). Limite : 20 Mo.\nRéduisez le PDF (compression) avant de l'importer."); return; }
+    var fr = new FileReader();
+    fr.onload = function () {
+      it.fichier_data = fr.result;   // data URI (embarqué)
+      it.fichier = file.name;        // nom d'origine (libellé)
+      var ok = sauverLocal();
+      majStructure();
+      if (!ok) {
+        window.alert("« " + file.name + " » importé (" + tailleLisible(file.size) + ").\n\nMais c'est trop volumineux pour la sauvegarde automatique : cliquez sur « Enregistrer le projet » pour ne pas perdre votre travail.");
+      } else if (file.size > 4 * 1024 * 1024) {
+        window.alert("« " + file.name + " » importé (" + tailleLisible(file.size) + ").\n\nC'est un fichier volumineux : la page publiée en sera d'autant plus lourde. Pensez à compresser vos PDF si possible.");
+      }
+    };
+    fr.onerror = function () { window.alert("Lecture du fichier impossible."); };
+    fr.readAsDataURL(file);
+  }
+
+  function tailleDepuisDataURI(dataURI) {
+    var i = dataURI.indexOf(","); var b64 = i >= 0 ? dataURI.slice(i + 1) : dataURI;
+    return tailleLisible(Math.floor(b64.length * 3 / 4));
+  }
+  function tailleLisible(bytes) {
+    return bytes < 1024 ? bytes + " o" : bytes < 1048576 ? (bytes / 1024).toFixed(0) + " Ko" : (bytes / 1048576).toFixed(1) + " Mo";
   }
 
   /* ---------- génération de la page publiée (= prévisualisation) ---------- */

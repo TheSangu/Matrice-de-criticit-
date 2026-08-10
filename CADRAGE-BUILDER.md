@@ -131,11 +131,21 @@ CADRAGE-BUILDER.md     Ce document
 
 ---
 
-## 8. État d'avancement
+## 8. Périmètre arrêté & état d'avancement
 
-- [~] **Étape 1** — Socle du Studio + archétype Évaluation (matrice éditable,
-      prévisu live, enregistrer/publier). *En cours.*
-- [ ] Étape 2 — Hub multi-outils
-- [ ] Étape 3 — Archétype Affiche à blocs + import de documents
-- [ ] Étape 4 — Autonomie & garde-fous + guide du mainteneur
-- [ ] Étape 5 — Autres archétypes (option)
+> **Décision (2026-08-10)** : le périmètre est **arrêté à la matrice de criticité**.
+> Pas de hub multi-outils ni de builder générique (Étapes 2 & 5 abandonnées). Le
+> besoin retenu : **un éditeur modulable de la matrice** (contenu, prévention, doc)
+> **avec import des documents affichés**. Le concept Studio → Hub des §2–3 reste
+> documenté à titre de vision, mais n'est pas mis en œuvre.
+
+- [x] **Étape 1 — Studio (archétype « évaluation »)** : `studio.html` +
+      `studio-autonome.html` (fichier unique, double-clic). Édite toute la matrice
+      par formulaires, aperçu live, autosave, enregistrer/charger un projet,
+      publier une page HTML autonome.
+- [x] **Étape 3 (réduite) — Import de documents** : dans l'onglet « Affiches »,
+      import d'un PDF/image, **embarqué** dans la page publiée (ouvert via Blob).
+      L'archétype « affiche à blocs » n'est pas retenu (hors périmètre).
+- [ ] **Étape 4 — Autonomie** : guide du mainteneur non-technique (à rédiger).
+- ~~Étape 2 — Hub multi-outils~~ (hors périmètre)
+- ~~Étape 5 — Autres archétypes~~ (hors périmètre)

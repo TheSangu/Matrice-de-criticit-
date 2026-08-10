@@ -14,6 +14,31 @@
   function $(s) { return document.querySelector(s); }
   function el(t, c) { var n = document.createElement(t); if (c) n.className = c; return n; }
 
+  // Lien vers une affiche : soit un document EMBARQUÉ (importé dans le Studio,
+  // champ `fichier_data` en data URI), soit un CHEMIN vers un fichier du site.
+  // Les data URI ne peuvent pas s'ouvrir directement dans un onglet (bloqué par
+  // les navigateurs) : on passe par un Blob (autorisé), créé une seule fois par item.
+  var _blobCache = (typeof WeakMap !== "undefined") ? new WeakMap() : null;
+  function afficheHref(it) {
+    if (it.fichier_data) {
+      if (_blobCache && _blobCache.has(it)) return _blobCache.get(it);
+      try {
+        var url = URL.createObjectURL(dataURIversBlob(it.fichier_data));
+        if (_blobCache) _blobCache.set(it, url);
+        return url;
+      } catch (e) { return it.fichier || "#"; }
+    }
+    return it.fichier;
+  }
+  function dataURIversBlob(dataURI) {
+    var virgule = dataURI.indexOf(",");
+    var meta = dataURI.slice(0, virgule), b64 = dataURI.slice(virgule + 1);
+    var mime = (meta.match(/data:([^;]+)/) || [])[1] || "application/octet-stream";
+    var bin = atob(b64), n = bin.length, arr = new Uint8Array(n);
+    for (var i = 0; i < n; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+
   // Résolution du contenu, dans l'ordre :
   //  1) contenu embarqué dans la page (window.__CONTENU__) → page publiée par le
   //     Studio ou prévisualisation : aucun accès réseau, fonctionne même en file://.
@@ -258,7 +283,7 @@
       var ul = el("ul", "affichages-liste");
       g.items.forEach(function (it) {
         var li = el("li");
-        var a = el("a"); a.href = it.fichier; a.target = "_blank"; a.rel = "noopener";
+        var a = el("a"); a.href = afficheHref(it); a.target = "_blank"; a.rel = "noopener";
         a.textContent = it.titre;
         var hint = el("span", "sr-only"); hint.textContent = " (PDF, nouvel onglet)";
         a.appendChild(hint);
