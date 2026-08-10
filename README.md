@@ -39,10 +39,9 @@ CADRAGE.md            Document de cadrage / socle du projet
 
 ### Sans code — le Studio (recommandé)
 
-Ouvrez **`studio.html`** dans le navigateur : un éditeur à formulaires qui permet
-de modifier toute la matrice (signaux, conseils, niveaux, ressources, textes de
-prévention, affiches) **sans toucher au JSON**, avec un **aperçu en direct** de ce
-que verront les managers.
+Le **Studio** est un éditeur à formulaires qui permet de modifier toute la matrice
+(signaux, conseils, niveaux, ressources, textes de prévention, affiches) **sans
+toucher au JSON**, avec un **aperçu en direct** de ce que verront les managers.
 
 - Le travail est **mémorisé automatiquement** dans le navigateur.
 - **Enregistrer le projet** : télécharge une sauvegarde (`projet-matrice.json`)
@@ -51,8 +50,21 @@ que verront les managers.
   l'intranet, ou exporte `contenu.json` pour le dépôt.
 - **Aucune donnée ne sort** : tout reste dans le navigateur (comme l'outil public).
 
-Comme l'outil, le Studio charge son contenu via `fetch` : lancez un petit serveur
-local (voir « Tester en local ») plutôt que d'ouvrir le fichier en `file://`.
+**Deux façons de l'ouvrir :**
+
+1. **`studio-autonome.html` — en double-clic, rien à installer** (recommandé pour
+   un poste). C'est un **fichier unique** qui embarque tout : téléchargez-le,
+   double-cliquez, il s'ouvre dans votre navigateur. Aucun serveur, aucun terminal.
+2. **`studio.html`** — la version « source » (pour le dépôt / l'intranet). Elle
+   charge ses fichiers via `fetch` : il faut donc un petit serveur local (voir
+   « Tester en local »), l'ouverture directe en `file://` ne marche pas.
+
+Le fichier autonome est **généré** à partir des sources. Après une modification du
+code ou du contenu par défaut, régénérez-le :
+
+```bash
+node build-studio.mjs   # (re)crée studio-autonome.html
+```
 
 Le cadrage de ce chantier (Studio → Hub → outils) est dans
 [`CADRAGE-BUILDER.md`](CADRAGE-BUILDER.md).

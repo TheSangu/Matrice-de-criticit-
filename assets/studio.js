@@ -25,13 +25,8 @@
   function normaliserCouleur(v) { return /^#[0-9a-fA-F]{6}$/.test(v || "") ? v : "#888888"; }
 
   /* ---------- démarrage : charge le gabarit de rendu + le projet ---------- */
-  Promise.all([
-    fetch("index.html").then(function (r) { return r.text(); }),
-    fetch("assets/style.css").then(function (r) { return r.text(); }),
-    fetch("assets/app.js").then(function (r) { return r.text(); }),
-    fetch("assets/logo.png").then(function (r) { return r.ok ? r.blob() : null; }).then(blobToDataURL).catch(function () { return null; })
-  ]).then(function (parts) {
-    gabarit = { html: parts[0], css: parts[1], js: parts[2], logo: parts[3] };
+  chargerGabarit().then(function (g) {
+    gabarit = g;
     return chargerProjet();
   }).then(function (p) {
     projet = p;
@@ -41,6 +36,30 @@
       "Lancez un petit serveur local (voir le README), puis rechargez la page.<br>" +
       "<small>" + (err && err.message || err) + "</small></div>";
   });
+
+  // Deux modes de fonctionnement :
+  //  1) AUTONOME — tout est embarqué dans window.__STUDIO_EMBED__ (fichier unique
+  //     studio-autonome.html, ouvrable en double-clic, sans serveur) ;
+  //  2) SERVI — on charge les fichiers du dépôt via fetch (nécessite un serveur local).
+  function chargerGabarit() {
+    if (window.__STUDIO_EMBED__) {
+      var e = window.__STUDIO_EMBED__;
+      return Promise.resolve({ html: e.html, css: e.css, js: e.js, logo: e.logo });
+    }
+    return Promise.all([
+      fetch("index.html").then(function (r) { return r.text(); }),
+      fetch("assets/style.css").then(function (r) { return r.text(); }),
+      fetch("assets/app.js").then(function (r) { return r.text(); }),
+      fetch("assets/logo.png").then(function (r) { return r.ok ? r.blob() : null; }).then(blobToDataURL).catch(function () { return null; })
+    ]).then(function (parts) { return { html: parts[0], css: parts[1], js: parts[2], logo: parts[3] }; });
+  }
+
+  // Contenu de départ : embarqué (mode autonome) ou data/contenu.json (mode servi).
+  function contenuInitial() {
+    if (window.__STUDIO_EMBED__ && window.__STUDIO_EMBED__.contenu) return Promise.resolve(clonerContenu(window.__STUDIO_EMBED__.contenu));
+    return fetch("data/contenu.json", { cache: "no-store" }).then(function (r) { return r.json(); });
+  }
+  function clonerContenu(o) { return JSON.parse(JSON.stringify(o)); }
 
   function blobToDataURL(blob) {
     if (!blob) return Promise.resolve(null);
@@ -56,7 +75,7 @@
     var saved = null;
     try { saved = localStorage.getItem(LS_KEY); } catch (e) { /* localStorage indispo */ }
     if (saved) { try { return Promise.resolve(JSON.parse(saved)); } catch (e) { /* brouillon corrompu */ } }
-    return fetch("data/contenu.json", { cache: "no-store" }).then(function (r) { return r.json(); });
+    return contenuInitial();
   }
 
   function demarrer() {
@@ -425,10 +444,16 @@
   // qui s'ouvre dans le navigateur sans accès réseau (même en file://).
   function buildStandalone(contenu) {
     var html = gabarit.html;
-    html = html.replace('<link rel="stylesheet" href="assets/style.css" />', "<style>\n" + gabarit.css + "\n</style>");
+    // Remplacements en FORME FONCTION : la chaîne retournée est insérée telle
+    // quelle. Indispensable — sinon un « $ » saisi par l'utilisateur (ou dans le
+    // code inliné) serait interprété comme motif spécial ($$, $&…) et corromprait
+    // la page.
+    var styleTag = "<style>\n" + gabarit.css + "\n</style>";
+    html = html.replace('<link rel="stylesheet" href="assets/style.css" />', function () { return styleTag; });
     if (gabarit.logo) { html = html.split("assets/logo.png").join(gabarit.logo); }
     var donnees = "<scr" + "ipt>window.__CONTENU__ = " + jsonSafe(contenu) + ";</scr" + "ipt>";
-    html = html.replace('<script src="assets/app.js"></script>', donnees + "\n<scr" + "ipt>\n" + gabarit.js + "\n</scr" + "ipt>");
+    var scriptTag = donnees + "\n<scr" + "ipt>\n" + gabarit.js + "\n</scr" + "ipt>";
+    html = html.replace('<script src="assets/app.js"></script>', function () { return scriptTag; });
     return html;
   }
   // JSON sûr à injecter dans une balise <script> (neutralise « </script> » éventuel).
@@ -472,9 +497,9 @@
     e.target.value = "";
   }
   function reinitialiser() {
-    if (!window.confirm("Réinitialiser à partir du contenu actuellement publié (data/contenu.json) ?\nVos modifications non enregistrées seront perdues.")) return;
-    fetch("data/contenu.json", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (json) {
+    if (!window.confirm("Réinitialiser à partir du contenu d'origine ?\nVos modifications non enregistrées seront perdues.")) return;
+    contenuInitial().then(function (json) {
       projet = json; renderPanel(true); updatePreview(); sauverLocal(); marquerStatut("Réinitialisé ✓");
-    }).catch(function () { window.alert("Impossible de recharger data/contenu.json."); });
+    }).catch(function () { window.alert("Impossible de recharger le contenu d'origine."); });
   }
 })();
