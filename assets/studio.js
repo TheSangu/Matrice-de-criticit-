@@ -475,7 +475,6 @@
   function enregistrerProjet() { telecharger("projet-matrice.json", JSON.stringify(projet, null, 2), "application/json"); marquerStatut("Projet enregistré ✓"); }
   function actionPublier(action) {
     if (action === "publier-html") { telecharger("index.html", buildStandalone(projet), "text/html"); marquerStatut("Page publiée ✓"); }
-    else if (action === "export-json") { telecharger("contenu.json", JSON.stringify(projet, null, 2), "application/json"); marquerStatut("contenu.json exporté ✓"); }
     else if (action === "apercu-onglet") {
       var blob = new Blob([buildStandalone(projet)], { type: "text/html" });
       var url = URL.createObjectURL(blob);
