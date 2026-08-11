@@ -149,6 +149,9 @@ body {
 .pill-check input { margin: 0; }
 .pill-check.on { border-color: var(--primary); background: var(--accent-soft, #e7faf0); color: var(--primary-dark); font-weight: 600; }
 
+.case { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; font-weight: 600; color: var(--ink); cursor: pointer; margin: 0.1rem 0 0.8rem; padding: 0.4rem 0.6rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; }
+.case input { width: 16px; height: 16px; accent-color: var(--primary); }
+
 .sous-section { margin: 1.4rem 0 0.7rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.95rem; font-weight: 700; color: var(--ink); }
 .note-info { font-size: 0.8rem; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: 8px; padding: 0.55rem 0.7rem; margin: 0.4rem 0 0.9rem; }
 .verrou { font-size: 0.72rem; color: var(--muted); }

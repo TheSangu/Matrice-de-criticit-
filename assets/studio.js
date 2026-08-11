@@ -150,6 +150,13 @@
     s.addEventListener("change", function () { oninput(s.value); commit(); });
     return s;
   }
+  function inputCheck(labelText, checked, onchange) {
+    var lab = ce("label", "case");
+    var i = ce("input"); i.type = "checkbox"; i.checked = !!checked;
+    i.addEventListener("change", function () { onchange(i.checked); commit(); });
+    lab.appendChild(i); lab.appendChild(document.createTextNode(" " + labelText));
+    return lab;
+  }
 
   function miniBtn(label, titre, disabled, onclick, extra) {
     var b = ce("button", "mini-btn" + (extra ? " " + extra : "")); b.type = "button";
@@ -238,8 +245,14 @@
   }
 
   /* ---------- options partagées ---------- */
+  function estGraduel(n) { return n.graduel !== false; }
+  function estBaseline(n) { return n.rang === 0; } // N0 : « aucun signal »
   function optionsFamilles() { return Object.keys(projet.meta.familles).map(function (k) { return { value: k, label: projet.meta.familles[k].libelle }; }); }
-  function optionsNiveaux() { return projet.niveaux.filter(function (n) { return n.rang > 0; }).map(function (n) { return { value: n.id, label: n.id + " — " + n.libelle }; }); }
+  function optionsNiveaux() {
+    return projet.niveaux.filter(function (n) { return !estBaseline(n); }).map(function (n) {
+      return { value: n.id, label: estGraduel(n) ? (/^N\d+$/.test(n.id) ? n.id + " — " + n.libelle : n.libelle) : (n.libelle + " (hors échelle)") };
+    });
+  }
   function optionsRessources(inclureVide) {
     var arr = Object.keys(projet.meta.ressources || {}).map(function (k) { return { value: k, label: projet.meta.ressources[k].libelle }; });
     if (inclureVide) arr.unshift({ value: "", label: "— aucune —" });
@@ -332,20 +345,30 @@
   }
 
   function panelNiveaux(host) {
-    titrePanneau(host, "Niveaux de criticité", "La conduite d'ensemble selon le signal le plus sérieux coché. N0 = aucun signal.");
-    noteInfo(host, "Les niveaux (N0→N4) sont la charpente de l'outil : on peut les reformuler, mais évitez d'en supprimer.");
-    projet.niveaux.forEach(function (n) {
+    titrePanneau(host, "Niveaux", "La conduite selon les signaux cochés. Un niveau « graduel » est sur l'échelle de gravité (N1→N4) : on garde le plus fort coché. Un niveau « hors échelle » (ex. Recadrage) s'affiche en bloc à part, en plus.");
+    noteInfo(host, "N0 = « aucun signal » (repère de base, non supprimable). Vous pouvez ajouter des niveaux et choisir, pour chacun, s'il compte dans l'échelle de gravité.");
+    var arr = projet.niveaux;
+    arr.forEach(function (n, i) {
       var carte = ce("div", "liste-carte");
       var tete = ce("div", "liste-carte-tete");
-      var num = ce("span", "liste-carte-num"); num.textContent = n.id;
+      var num = ce("span", "liste-carte-num"); num.textContent = /^N\d+$/.test(n.id) ? n.id : (estGraduel(n) ? "échelle" : "hors échelle");
       var t = ce("span", "liste-carte-titre"); t.textContent = n.libelle;
-      tete.appendChild(num); tete.appendChild(t); carte.appendChild(tete);
+      tete.appendChild(num); tete.appendChild(t);
+      if (!estBaseline(n)) {
+        var acts = ce("div", "mini-actions");
+        acts.appendChild(miniBtn("↑", "Monter", i === 0, function () { deplacer(arr, i, -1); majStructure(); }));
+        acts.appendChild(miniBtn("↓", "Descendre", i === arr.length - 1, function () { deplacer(arr, i, 1); majStructure(); }));
+        acts.appendChild(miniBtn("✕", "Supprimer", false, function () { supprimerNiveau(n, i); }, "suppr"));
+        tete.appendChild(acts);
+      }
+      carte.appendChild(tete);
       var row = ce("div", "champ-inline");
       row.appendChild(champ("Libellé", inputText(n.libelle, set(n, "libelle"))));
       var cc = champ("Couleur", inputColor(n.couleur, set(n, "couleur"))); cc.style.flex = "0 0 auto"; row.appendChild(cc);
       carte.appendChild(row);
       carte.appendChild(champ("Résumé", inputArea(n.resume, set(n, "resume"))));
-      if (n.rang > 0) {
+      if (!estBaseline(n)) {
+        carte.appendChild(inputCheck("Compter dans l'échelle de gravité (N1→N4)", estGraduel(n), function (v) { n.graduel = v; renderPanel(false); }));
         carte.appendChild(champ("Posture", inputArea(n.posture, set(n, "posture"))));
         n.demarche = n.demarche || [];
         champLabelBloc(carte, "À faire maintenant (démarche)", listeTexte(n.demarche, { ajouterLabel: "+ Ajouter une action", multiligne: true }));
@@ -355,6 +378,23 @@
       }
       host.appendChild(carte);
     });
+    ajouterBouton(host, "+ Ajouter un niveau", function () {
+      var maxRang = 0; arr.forEach(function (n) { if (typeof n.rang === "number" && n.rang > maxRang) maxRang = n.rang; });
+      arr.push({ id: nouvelId("niveau", arr), rang: maxRang + 1, libelle: "Nouveau niveau", couleur: "#5b6b73", resume: "", posture: "", demarche: [], ressources: [], graduel: false });
+      majStructure();
+    });
+  }
+
+  function supprimerNiveau(n, i) {
+    if (estBaseline(n)) return;
+    var refs = projet.signaux.filter(function (s) { return s.niveau === n.id; });
+    if (refs.length) {
+      window.alert("Impossible de supprimer « " + n.libelle + " » : " + refs.length + " signal(aux) l'utilise(nt).\nRéaffectez-les d'abord à un autre niveau (onglet Signaux).");
+      return;
+    }
+    if (!window.confirm("Supprimer le niveau « " + n.libelle + " » ?")) return;
+    projet.niveaux.splice(i, 1);
+    majStructure();
   }
 
   function panelRessources(host) {

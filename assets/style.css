@@ -57,6 +57,18 @@ body {
 .steps li.actif::before { background: #fff; color: var(--primary); }
 .steps li.fait::before { content: "✓"; background: var(--accent); color: var(--primary-dark); }
 
+/* ---------- Registres parallèles (niveaux hors échelle) ---------- */
+.niveaux-autres { display: grid; gap: 0.9rem; margin-top: 1rem; }
+.niveaux-autres:empty { display: none; }
+.niveau-autre { padding: 0; overflow: hidden; }
+.niveau-autre-head { color: #fff; padding: 0.65rem 0.95rem; }
+.niveau-autre-head .na-libelle { font-weight: 800; font-size: 1.05rem; }
+.niveau-autre-head .na-resume { display: block; font-size: 0.9rem; opacity: 0.95; margin-top: 0.15rem; }
+.niveau-autre-corps { padding: 0.85rem 0.95rem; }
+.niveau-autre-corps .posture { margin: 0 0 0.4rem; }
+.niveau-autre-corps h4 { margin: 0.7rem 0 0.3rem; font-size: 0.85rem; color: var(--text); }
+.niveau-autre-corps h4:first-child { margin-top: 0; }
+
 /* ---------- Conteneur principal ---------- */
 .app { flex: 1; padding: 1.3rem 1.1rem 1.6rem; display: flex; flex-direction: column; }
 .step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.2rem 1.3rem 1.4rem; }

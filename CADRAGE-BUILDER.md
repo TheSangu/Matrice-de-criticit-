@@ -146,6 +146,12 @@ CADRAGE-BUILDER.md     Ce document
 - [x] **Étape 3 (réduite) — Import de documents** : dans l'onglet « Affiches »,
       import d'un PDF/image, **embarqué** dans la page publiée (ouvert via Blob).
       L'archétype « affiche à blocs » n'est pas retenu (hors périmètre).
+- [x] **Niveaux personnalisables (multi-registres)** : ajout/suppression/
+      réordonnancement de niveaux dans le Studio. Modèle étendu : chaque niveau est
+      soit **graduel** (échelle de gravité N1→N4, on garde le plus fort coché), soit
+      **hors échelle** (ex. Recadrage) — rendu alors en **bloc parallèle** dans le
+      résultat, en plus de la conduite principale. `app.js` : `graduel` (défaut true,
+      rétrocompatible) + `res.autres`.
 - [ ] **Étape 4 — Autonomie** : guide du mainteneur non-technique (à rédiger).
 - ~~Étape 2 — Hub multi-outils~~ (hors périmètre)
 - ~~Étape 5 — Autres archétypes~~ (hors périmètre)

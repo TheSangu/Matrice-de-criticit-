@@ -59,6 +59,7 @@ Chaque tâche pointe vers le(s) fichier(s) concerné(s).
 - [x] **Étape 1 — Studio (archétype « évaluation »)** : `studio.html` édite toute la matrice par formulaires (identité/prévention, signaux, contexte, niveaux, ressources, affiches), **aperçu en direct**, autosave, enregistrer/publier
 - [x] **Studio autonome** : `studio-autonome.html`, fichier unique ouvrable en **double-clic** (sans serveur) — généré par `build-studio.mjs`
 - [x] **Import de documents** : import d'un PDF/image dans l'onglet « Affiches », **embarqué** dans la page publiée (ouvert via Blob) — mise à jour des affiches 100 % autonome
+- [x] **Niveaux personnalisables (multi-registres)** : ajout / suppression / réordonnancement de niveaux dans le Studio. Un niveau peut être « hors échelle » (ex. Recadrage) : il s'affiche en **bloc parallèle** dans le résultat, en plus de la conduite principale (échelle graduelle N1→N4 conservée). Augmente la portée de l'outil.
 - [ ] **Guide du mainteneur** non-technique (mode d'emploi pas à pas)
 - **Périmètre arrêté à la matrice** (2026-08-10) : ~~hub multi-outils~~, ~~affiche à blocs~~, ~~autres archétypes~~ hors périmètre (voir `CADRAGE-BUILDER.md` §8)
 

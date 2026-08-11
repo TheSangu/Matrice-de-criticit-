@@ -192,14 +192,25 @@
   function selContexte() { return data.contexte.filter(function (c) { return etat.contexte[c.id]; }); }
   function niv(id) { return data.niveaux.filter(function (n) { return n.id === id; })[0]; }
 
-  /* ---------- Évaluation : le plus sérieux signal coché ---------- */
+  // Un niveau est « graduel » (sur l'échelle de gravité N1→N4) sauf s'il porte
+  // explicitement graduel:false. Défaut à true = compatible avec l'existant.
+  function estGraduel(n) { return n && n.graduel !== false; }
+
+  /* ---------- Évaluation ----------
+   * Conduite PRINCIPALE = le niveau GRADUEL le plus fort coché (échelle N1→N4).
+   * Niveaux HORS ÉCHELLE cochés (ex. Recadrage) = registres parallèles rendus en
+   * blocs distincts (res.autres). Sans aucun niveau graduel coché, le premier
+   * niveau hors échelle devient la conduite principale. */
   function evaluer() {
     var sig = selSignaux();
     var ctx = selContexte();
-    if (!sig.length) return { niveau: niv("N0"), sig: sig, ctx: ctx };
-    var maxRang = 0;
-    sig.forEach(function (s) { var r = niv(s.niveau).rang; if (r > maxRang) maxRang = r; });
-    return { niveau: data.niveaux.filter(function (n) { return n.rang === maxRang; })[0], sig: sig, ctx: ctx };
+    var vus = {}, coches = [];
+    sig.forEach(function (s) { var n = niv(s.niveau); if (n && !vus[n.id]) { vus[n.id] = true; coches.push(n); } });
+    var graduels = coches.filter(estGraduel).sort(function (a, b) { return b.rang - a.rang; });
+    var horsEchelle = coches.filter(function (n) { return !estGraduel(n); });
+    var principal = graduels[0] || horsEchelle[0] || niv("N0");
+    var autres = horsEchelle.filter(function (n) { return n.id !== principal.id; });
+    return { niveau: principal, autres: autres, sig: sig, ctx: ctx };
   }
 
   /* ---------- Restitution ---------- */
@@ -209,8 +220,11 @@
 
     var bandeau = $("#bandeau-niveau");
     bandeau.style.background = n.couleur;
+    // La ligne « Niveau de criticité Nx » n'a de sens que pour l'échelle N0→N4 ;
+    // les niveaux personnalisés (Recadrage…) affichent directement leur libellé.
+    var ligneId = /^N\d+$/.test(n.id) ? ('<div class="niv-id">Niveau de criticité ' + n.id + "</div>") : "";
     bandeau.innerHTML =
-      '<div class="niv-id">Niveau de criticité ' + n.id + "</div>" +
+      ligneId +
       '<div class="niv-libelle">' + n.libelle + "</div>" +
       '<p class="niv-resume">' + n.resume + "</p>";
 
@@ -219,7 +233,8 @@
       lecture.hidden = false;
       lecture.textContent = res.sig.length + (res.sig.length > 1 ? " signaux cochés" : " signal coché") +
         (res.ctx.length ? " · " + res.ctx.length + " élément" + (res.ctx.length > 1 ? "s" : "") + " de contexte" : "") +
-        " — la conduite est donnée par le signal le plus sérieux.";
+        (res.autres.length ? " — conduite principale ci-dessous, complétée par d'autres registres."
+                           : " — la conduite est donnée par le signal le plus sérieux.");
     } else { lecture.hidden = true; }
 
     var cols = $(".resultat-cols");
@@ -236,12 +251,42 @@
       $("#appui-note").textContent = data.meta.appui_note || "";
       rendreDetail(res);
     }
+    // Registres parallèles (niveaux hors échelle cochés) : un bloc par niveau.
+    rendreNiveauxAutres(res.autres);
     // Les communications sont contextuelles : elles peuvent dépendre d'un
     // contexte coché seul (donc même en N0). rendreAffichages gère son propre
     // état d'affichage selon les ressources actives.
     rendreAffichages(res, n);
     // Annuaire permanent (sensibilisation) : toujours affiché.
     rendreRessourcesUtiles();
+  }
+
+  /* Registres parallèles : un bloc par niveau hors échelle coché (Recadrage…). */
+  function rendreNiveauxAutres(autres) {
+    var cont = $("#niveaux-autres");
+    if (!cont) return;
+    cont.innerHTML = "";
+    (autres || []).forEach(function (n) {
+      var carte = el("div", "carte niveau-autre");
+      var head = el("div", "niveau-autre-head");
+      head.style.background = n.couleur;
+      var lib = el("span", "na-libelle"); lib.textContent = n.libelle;
+      head.appendChild(lib);
+      if (n.resume) { var r = el("span", "na-resume"); r.textContent = n.resume; head.appendChild(r); }
+      carte.appendChild(head);
+      var corps = el("div", "niveau-autre-corps");
+      if (n.posture) { var p = el("p", "posture"); p.textContent = n.posture; corps.appendChild(p); }
+      if (n.demarche && n.demarche.length) {
+        var hd = el("h4"); hd.textContent = "À faire"; corps.appendChild(hd);
+        var ol = el("ol", "demarche"); remplirListe(ol, n.demarche); corps.appendChild(ol);
+      }
+      if (n.ressources && n.ressources.length) {
+        var hr = el("h4"); hr.textContent = "Vers qui orienter"; corps.appendChild(hr);
+        var ul = el("ul", "ressources"); rendreRessources(ul, n.ressources); corps.appendChild(ul);
+      }
+      carte.appendChild(corps);
+      cont.appendChild(carte);
+    });
   }
 
   /* Annuaire permanent des dispositifs, en fin de résultat (communiquer / sensibiliser). */
