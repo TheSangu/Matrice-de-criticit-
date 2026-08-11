@@ -115,7 +115,7 @@
       var ok = sauverLocal();
       marquerStatut(ok ? "Enregistré ✓" : "⚠ Sauvegarde auto pleine — « Enregistrer le projet »");
     }, 400);
-    clearTimeout(previewTimer); previewTimer = setTimeout(updatePreview, 300);
+    clearTimeout(previewTimer); previewTimer = setTimeout(updatePreview, 500);
   }
   // Modification de structure (ajout / suppression / déplacement) : idem + reconstruit le panneau.
   function majStructure() { commit(); renderPanel(false); }
@@ -511,7 +511,9 @@
   /* ---------- génération de la page publiée (= prévisualisation) ---------- */
   // Le gabarit index.html avec CSS + données + app.js inlinés : une page autonome,
   // qui s'ouvre dans le navigateur sans accès réseau (même en file://).
-  function buildStandalone(contenu) {
+  // apercu = true : page destinée à la prévisualisation dans le Studio. On y pose
+  // window.__APERCU__ pour que le moteur ne prenne pas le focus (voir app.js).
+  function buildStandalone(contenu, apercu) {
     var html = gabarit.html;
     // Remplacements en FORME FONCTION : la chaîne retournée est insérée telle
     // quelle. Indispensable — sinon un « $ » saisi par l'utilisateur (ou dans le
@@ -520,7 +522,8 @@
     var styleTag = "<style>\n" + gabarit.css + "\n</style>";
     html = html.replace('<link rel="stylesheet" href="assets/style.css" />', function () { return styleTag; });
     if (gabarit.logo) { html = html.split("assets/logo.png").join(gabarit.logo); }
-    var donnees = "<scr" + "ipt>window.__CONTENU__ = " + jsonSafe(contenu) + ";</scr" + "ipt>";
+    var flag = apercu ? "window.__APERCU__ = true; " : "";
+    var donnees = "<scr" + "ipt>" + flag + "window.__CONTENU__ = " + jsonSafe(contenu) + ";</scr" + "ipt>";
     var scriptTag = donnees + "\n<scr" + "ipt>\n" + gabarit.js + "\n</scr" + "ipt>";
     html = html.replace('<script src="assets/app.js"></script>', function () { return scriptTag; });
     return html;
@@ -530,7 +533,7 @@
 
   function updatePreview() {
     if (!gabarit) return;
-    try { $("#preview").srcdoc = buildStandalone(projet); }
+    try { $("#preview").srcdoc = buildStandalone(projet, true); }
     catch (e) { if (window.console && console.error) console.error("Prévisualisation impossible :", e); }
   }
 

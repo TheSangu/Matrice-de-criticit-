@@ -157,8 +157,14 @@
     // (annonce le contenu révélé, dont le bandeau role=status du résultat).
     majCompteurEtape(i);
     var cible = (STEPS[i] === "resultat") ? $("#bandeau-niveau") : $("#step-" + STEPS[i] + " h2");
-    if (cible) { cible.setAttribute("tabindex", "-1"); cible.focus({ preventScroll: true }); }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (cible) {
+      cible.setAttribute("tabindex", "-1");
+      // En prévisualisation dans le Studio (window.__APERCU__), on NE prend PAS le
+      // focus : sinon, à chaque reconstruction de l'aperçu, on volerait le focus du
+      // champ en cours de saisie. La vraie page publiée garde ce focus (a11y).
+      if (!window.__APERCU__) cible.focus({ preventScroll: true });
+    }
+    if (!window.__APERCU__) window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   /* Compteur d'étape (visible des seuls lecteurs d'écran). */
